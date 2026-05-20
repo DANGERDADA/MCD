@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCD Exam Master Sheet — MIT-ADT</title>
+<style>
+  :root {
+    --bg: #0f0f13;
+    --bg2: #16161e;
+    --bg3: #1e1e2a;
+    --border: #2a2a3a;
+    --text: #e8e8f0;
+    --muted: #888899;
+    --accent: #7c6af7;
+    --accent2: #4ecdc4;
+    --accent3: #ff6b6b;
+    --accent4: #ffd93d;
+    --accent5: #6bcb77;
+    --red: #ff4d6d;
+    --orange: #ff8c42;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.7; }
+
+  /* Header */
+  .hero { background: linear-gradient(135deg, #1a0a3e 0%, #0d1f3c 50%, #1a3a2a 100%); padding: 2.5rem 2rem; text-align: center; border-bottom: 1px solid var(--border); }
+  .hero h1 { font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, #a78bfa, #4ecdc4, #ffd93d); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem; }
+  .hero p { color: var(--muted); font-size: 0.85rem; }
+  .hero .badges { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-top: 0.8rem; }
+  .badge { padding: 0.2rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+  .badge-purple { background: #2d1f6e; color: #a78bfa; border: 1px solid #4a3a9e; }
+  .badge-teal { background: #0d3030; color: #4ecdc4; border: 1px solid #1a5050; }
+  .badge-yellow { background: #2d2500; color: #ffd93d; border: 1px solid #4a3d00; }
+  .badge-red { background: #2d0f1a; color: #ff6b9d; border: 1px solid #5a1a30; }
+
+  /* Nav */
+  .nav { background: var(--bg2); border-bottom: 1px solid var(--border); display: flex; gap: 0; overflow-x: auto; position: sticky; top: 0; z-index: 100; }
+  .nav-btn { padding: 0.7rem 1.1rem; background: none; border: none; color: var(--muted); cursor: pointer; font-size: 0.78rem; font-weight: 600; white-space: nowrap; border-bottom: 2px solid transparent; transition: all 0.2s; }
+  .nav-btn:hover { color: var(--text); background: var(--bg3); }
+  .nav-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* Layout */
+  .page { display: none; padding: 1.5rem; max-width: 1100px; margin: 0 auto; }
+  .page.active { display: block; }
+
+  /* Cards */
+  .card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 1.2rem 1.4rem; margin-bottom: 1.2rem; }
+  .card-header { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.8rem; flex-wrap: wrap; }
+  .card-title { font-size: 0.95rem; font-weight: 700; color: var(--text); }
+  .freq-badge { font-size: 0.7rem; font-weight: 800; padding: 0.15rem 0.5rem; border-radius: 4px; }
+  .freq-high { background: #2d0a0a; color: #ff6b6b; border: 1px solid #5a1515; }
+  .freq-med { background: #1a1a00; color: #ffd93d; border: 1px solid #3a3a00; }
+  .freq-low { background: #0a1a0a; color: #6bcb77; border: 1px solid #1a3a1a; }
+  .marks-tag { font-size: 0.7rem; background: #0d1f3c; color: #60a5fa; border: 1px solid #1a3a6e; padding: 0.15rem 0.5rem; border-radius: 4px; font-weight: 700; }
+
+  /* Answer sections */
+  .ans-block { background: var(--bg3); border-left: 3px solid var(--accent); border-radius: 0 6px 6px 0; padding: 0.9rem 1rem; margin-top: 0.7rem; font-size: 0.85rem; }
+  .ans-label { font-size: 0.7rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.4rem; }
+  .kw-block { background: var(--bg3); border-left: 3px solid var(--accent4); border-radius: 0 6px 6px 0; padding: 0.7rem 1rem; margin-top: 0.5rem; font-size: 0.82rem; }
+  .trick-block { background: var(--bg3); border-left: 3px solid var(--accent5); border-radius: 0 6px 6px 0; padding: 0.7rem 1rem; margin-top: 0.5rem; font-size: 0.82rem; }
+  .warn-block { background: var(--bg3); border-left: 3px solid var(--accent3); border-radius: 0 6px 6px 0; padding: 0.7rem 1rem; margin-top: 0.5rem; font-size: 0.82rem; }
+  .prob-block { background: var(--bg3); border-left: 3px solid var(--accent2); border-radius: 0 6px 6px 0; padding: 0.6rem 1rem; margin-top: 0.5rem; font-size: 0.82rem; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin-top: 0.5rem; }
+  th { background: var(--bg3); padding: 0.5rem 0.7rem; text-align: left; color: var(--accent); font-weight: 700; border: 1px solid var(--border); }
+  td { padding: 0.45rem 0.7rem; border: 1px solid var(--border); color: var(--text); vertical-align: top; }
+  tr:nth-child(even) td { background: rgba(255,255,255,0.015); }
+
+  /* Section headings */
+  .section-head { font-size: 1.1rem; font-weight: 800; color: var(--accent); margin: 1.5rem 0 0.8rem; display: flex; align-items: center; gap: 0.5rem; }
+  .section-head::before { content: ''; width: 4px; height: 1.1em; background: var(--accent); border-radius: 2px; display: inline-block; }
+
+  /* Grid */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 700px) { .grid2 { grid-template-columns: 1fr; } .hero h1 { font-size: 1.3rem; } }
+
+  /* Priority stars */
+  .stars { color: var(--accent4); font-size: 0.85rem; }
+
+  /* Night before box */
+  .night-item { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 0.9rem 1.1rem; margin-bottom: 0.7rem; }
+  .night-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; margin-bottom: 0.3rem; }
+
+  ol, ul { padding-left: 1.3rem; }
+  li { margin-bottom: 0.25rem; }
+  strong { color: var(--accent4); font-weight: 700; }
+  code { background: var(--bg3); padding: 0.1rem 0.3rem; border-radius: 3px; font-family: monospace; color: var(--accent2); font-size: 0.9em; }
+  hr { border: none; border-top: 1px solid var(--border); margin: 1rem 0; }
+  .highlight { background: #1a1a00; border: 1px solid #3a3a00; border-radius: 6px; padding: 0.7rem 1rem; color: var(--accent4); font-weight: 600; font-size: 0.85rem; margin-top: 0.5rem; }
+  .toc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.8rem; }
+  .toc-item { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 0.8rem 1rem; cursor: pointer; transition: all 0.2s; }
+  .toc-item:hover { border-color: var(--accent); }
+  .toc-item strong { display: block; font-size: 0.9rem; color: var(--accent); }
+  .toc-item span { font-size: 0.75rem; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>⚡ MCD EXAM MASTER SHEET</h1>
+  <p>23ASH1104 — Materials for Computing Devices | MIT-ADT University</p>
+  <div class="badges">
+    <span class="badge badge-purple">4 PYQs Analyzed</span>
+    <span class="badge badge-teal">5 Units Covered</span>
+    <span class="badge badge-yellow">All Repeated Questions</span>
+    <span class="badge badge-red">Exam-Ready Answers</span>
+  </div>
+</div>
+
+<div class="nav">
+  <button class="nav-btn active" onclick="show('overview')">📊 Overview</button>
+  <button class="nav-btn" onclick="show('unit1')">U1 Polymers</button>
+  <button class="nav-btn" onclick="show('unit2')">U2 Nano</button>
+  <button class="nav-btn" onclick="show('unit3')">U3 Corrosion</button>
+  <button class="nav-btn" onclick="show('unit4')">U4 Statistics</button>
+  <button class="nav-btn" onclick="show('unit5')">U5 Materials</button>
+  <button class="nav-btn" onclick="show('comparisons')">⚖️ Differences</button>
+  <button class="nav-btn" onclick="show('formulas')">📐 Formulas</button>
+  <button class="nav-btn" onclick="show('nightbefore')">🌙 Night Before</button>
+</div>
+
+<!-- ============================  OVERVIEW  ============================ -->
+<div id="overview" class="page active">
+  <div class="section-head">Frequency Analysis — Most Repeated Questions</div>
+  <div class="card">
+    <table>
+      <tr><th>Rank</th><th>Question Topic</th><th>Unit</th><th>Times Repeated</th><th>Expected Marks</th><th>Priority</th></tr>
+      <tr><td>1</td><td>Applications of polymers in electronics field</td><td>U1</td><td><strong>4/4 papers (100%)</strong></td><td>4m</td><td class="stars">★★★★★</td></tr>
+      <tr><td>2</td><td>Population Variance & Standard Deviation numerical</td><td>U4</td><td><strong>4/4 papers (100%)</strong></td><td>4m</td><td class="stars">★★★★★</td></tr>
+      <tr><td>3</td><td>Optical fiber — definition, classification, applications</td><td>U2</td><td>4/4 papers</td><td>4m</td><td class="stars">★★★★★</td></tr>
+      <tr><td>4</td><td>Li-ion battery — advantages/applications</td><td>U5</td><td>4/4 papers</td><td>4m</td><td class="stars">★★★★★</td></tr>
+      <tr><td>5</td><td>Photovoltaic materials — properties</td><td>U5</td><td>4/4 papers</td><td>4m</td><td class="stars">★★★★★</td></tr>
+      <tr><td>6</td><td>Degree of Polymerization numerical</td><td>U1</td><td>3/4 papers</td><td>2m</td><td class="stars">★★★★★</td></tr>
+      <tr><td>7</td><td>Glass transition temperature factors</td><td>U1</td><td>3/4 papers</td><td>4m</td><td class="stars">★★★★★</td></tr>
+      <tr><td>8</td><td>Memory building tools &amp; materials (RAM/ROM/MRAM)</td><td>U2</td><td>3/4 papers</td><td>4m</td><td class="stars">★★★★☆</td></tr>
+      <tr><td>9</td><td>Doping methods for conducting polymer</td><td>U1</td><td>3/4 papers</td><td>4m</td><td class="stars">★★★★☆</td></tr>
+      <tr><td>10</td><td>Sacrificial anode cathodic protection</td><td>U3</td><td>3/4 papers</td><td>4m</td><td class="stars">★★★★☆</td></tr>
+      <tr><td>11</td><td>Photonics — materials, applications, advantages</td><td>U5</td><td>3/4 papers</td><td>4m</td><td class="stars">★★★★☆</td></tr>
+      <tr><td>12</td><td>Correlation vs Regression difference</td><td>U4</td><td>3/4 papers</td><td>4m</td><td class="stars">★★★★☆</td></tr>
+      <tr><td>13</td><td>Skewness — types, significance</td><td>U4</td><td>3/4 papers</td><td>4m</td><td class="stars">★★★★☆</td></tr>
+      <tr><td>14</td><td>Factors affecting corrosion (nature of metal)</td><td>U3</td><td>3/4 papers</td><td>4m</td><td class="stars">★★★★☆</td></tr>
+      <tr><td>15</td><td>Anodic vs Cathodic coating — what &amp; why anodic is better</td><td>U3</td><td>3/4 papers</td><td>4m</td><td class="stars">★★★★☆</td></tr>
+      <tr><td>16</td><td>Optical switching &amp; optical transmission</td><td>U5</td><td>3/4 papers</td><td>4m</td><td class="stars">★★★★☆</td></tr>
+      <tr><td>17</td><td>Powder Coating — methods, applications</td><td>U3</td><td>2/4 papers</td><td>4m</td><td class="stars">★★★☆☆</td></tr>
+      <tr><td>18</td><td>Constituents during compounding of polymers</td><td>U1</td><td>3/4 papers</td><td>4m</td><td class="stars">★★★★☆</td></tr>
+      <tr><td>19</td><td>LCP — classification, properties, applications</td><td>U1</td><td>3/4 papers</td><td>4m</td><td class="stars">★★★★☆</td></tr>
+      <tr><td>20</td><td>Photoresist Film — types, applications</td><td>U5</td><td>3/4 papers</td><td>4m</td><td class="stars">★★★★☆</td></tr>
+    </table>
+  </div>
+
+  <div class="section-head">Unit-wise High-Value Summary</div>
+  <div class="toc-grid">
+    <div class="toc-item" onclick="show('unit1')"><strong>Unit 1 — Polymers</strong><span>Tg factors, DOP numerical, Conducting polymer doping, LCP, Applications — 4 topics in EVERY paper</span></div>
+    <div class="toc-item" onclick="show('unit2')"><strong>Unit 2 — Nanomaterials</strong><span>Optical fiber, Memory building, DNA Computing, MRAM, Nano transistor</span></div>
+    <div class="toc-item" onclick="show('unit3')"><strong>Unit 3 — Corrosion</strong><span>Cathodic protection (sacrificial + impressed), Anodic vs cathodic coating, Galvanizing vs Tinning</span></div>
+    <div class="toc-item" onclick="show('unit4')"><strong>Unit 4 — Statistics</strong><span>Variance/SD numerical (in ALL papers!), Skewness, Correlation vs Regression, Calibration</span></div>
+    <div class="toc-item" onclick="show('unit5')"><strong>Unit 5 — Device Materials</strong><span>Li-ion battery, Photovoltaic properties, Photonics, Optical switching, Photoresist film</span></div>
+    <div class="toc-item" onclick="show('nightbefore')"><strong>Night Before List</strong><span>Only the must-know, highest-probability items for last-minute revision</span></div>
+  </div>
+</div>
+
+<!-- ============================  UNIT 1  ============================ -->
+<div id="unit1" class="page">
+  <div class="section-head">Unit 1 — Engineering Polymers</div>
+
+  <!-- Q1 -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Q1. Applications of Polymers in Electronics Field</span>
+      <span class="freq-badge freq-high">4/4 Papers — 100%</span>
+      <span class="marks-tag">4 Marks</span>
+      <span class="stars">★★★★★</span>
+    </div>
+    <div class="ans-block">
+      <div class="ans-label">Full Exam Answer</div>
+      <strong>Definition:</strong> Polymers are large molecules made of repeating monomer units having wide-ranging applications in electronics due to their flexibility, low cost, and tunable electrical properties.<br><br>
+      <strong>Applications of Polymers in Electronics:</strong>
+      <ol>
+        <li><strong>Insulating material:</strong> PVC and rubber are used as wire and cable insulation in electrical systems.</li>
+        <li><strong>Printed Circuit Boards (PCB):</strong> Epoxy resin and fiberglass composites (FR4) are used as substrate material in PCBs.</li>
+        <li><strong>Semiconductors / Conducting Polymers:</strong> Polyaniline (PANI), Polythiophene are used in organic transistors, OLEDs, and sensors.</li>
+        <li><strong>Dielectric material:</strong> Polyimide films are used as dielectric layers in capacitors and microelectronics.</li>
+        <li><strong>Encapsulation / Packaging:</strong> Epoxy resins are used to encapsulate IC chips, protecting them from moisture and mechanical damage.</li>
+        <li><strong>LCD screens:</strong> Liquid Crystal Polymers (LCP) are used in display technology for flat panel displays.</li>
+        <li><strong>Electroluminescent devices / OLED:</strong> PPV (poly para-phenylene vinylene) is used in polymer-based LEDs and OLED displays.</li>
+        <li><strong>Energy storage:</strong> Polymer electrolytes are used in solid-state batteries and supercapacitors.</li>
+        <li><strong>Solar cells:</strong> Conjugated polymers (P3HT) used in organic photovoltaic cells.</li>
+      </ol>
+    </div>
+    <div class="kw-block"><div class="ans-label">Keywords to Write</div>PVC insulation, Epoxy resin, PCB, Polyimide, PANI (Polyaniline), LCP, PPV, OLED, Encapsulation, Polymer electrolytes, Organic photovoltaics</div>
+    <div class="trick-block"><div class="ans-label">Memory Trick</div><strong>"I P S D E L E E S"</strong> → Insulation, PCB, Semiconductor/Conducting, Dielectric, Encapsulation, LCD, Electroluminescent, Energy storage, Solar cells</div>
+    <div class="warn-block"><div class="ans-label">Common Mistakes</div>Don't just write "PVC is used" — write WHERE exactly. Write material name + application specifically. Mention at least 6-8 points for 4 marks.</div>
+    <div class="prob-block"><div class="ans-label">Probability of Appearing Again</div>Near 100% — appeared in ALL 4 previous papers. Direct answer memorization = guaranteed marks.</div>
+  </div>
+
+  <!-- Q2 DOP -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Q2. Degree of Polymerization — Numerical</span>
+      <span class="freq-badge freq-high">3/4 Papers</span>
+      <span class="marks-tag">2 Marks</span>
+      <span class="stars">★★★★★</span>
+    </div>
+    <div class="ans-block">
+      <div class="ans-label">Formula</div>
+      <strong>M.W. of Polymer = M.W. of Monomer × Degree of Polymerization (n)</strong><br><br>
+      <strong>Example 1 (Dec 2025 paper):</strong> DOP = 1000000, MW monomer = 28 → MW of Polyethylene = 28 × 1000000 = <strong>28,000,000</strong><br><br>
+      <strong>Example 2 (Aug 2025):</strong> MW polymer = 58000, MW monomer = 32 → DOP = 58000/32 = <strong>1812.5</strong><br><br>
+      <strong>Example 3 (Jun 2024):</strong> MW polymer = 63750, DOP = 2700 → MW monomer = 63750/2700 = <strong>23.6</strong>
+    </div>
+    <div class="kw-block"><div class="ans-label">All Possible Question Forms</div>
+      1. Find MW of polymer when DOP and MW of monomer are given → <code>MW poly = MW mono × DOP</code><br>
+      2. Find DOP when MW of polymer and monomer are given → <code>DOP = MW poly / MW mono</code><br>
+      3. Find MW of monomer when MW of polymer and DOP are given → <code>MW mono = MW poly / DOP</code>
+    </div>
+    <div class="trick-block"><div class="ans-label">Memory Trick</div>"P = M × n" (Polymer = Monomer × n). Just triangle formula — cover what you want to find.</div>
+  </div>
+
+  <!-- Q3 Tg factors -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Q3. Factors Affecting Glass Transition Temperature (Tg)</span>
+      <span class="freq-badge freq-high">3/4 Papers</span>
+      <span class="marks-tag">4 Marks</span>
+      <span class="stars">★★★★★</span>
+    </div>
+    <div class="ans-block">
+      <div class="ans-label">Full Exam Answer</div>
+      <strong>Definition of Tg:</strong> The temperature at which amorphous polymers undergo transformation from glassy/hard state to rubbery/viscous state is called Glass Transition Temperature.<br><br>
+      <strong>Factors Affecting Tg:</strong>
+      <ol>
+        <li><strong>Crystallinity:</strong> Higher the crystallinity of polymer, higher is the Tg value. Crystalline regions restrict chain mobility.</li>
+        <li><strong>Chain Flexibility:</strong> More flexible polymer chains (with single bonds) have lower Tg. Rigid chains (aromatic rings) have higher Tg.</li>
+        <li><strong>Molecular Weight:</strong> Higher the molecular weight, higher is the Tg, because longer chains have more entanglements.</li>
+        <li><strong>Cross-linking:</strong> Higher the degree of cross-linking, higher is the Tg, because cross-links restrict segmental motion.</li>
+        <li><strong>Plasticizers:</strong> Addition of plasticizers lowers the Tg by increasing free volume and reducing intermolecular forces.</li>
+        <li><strong>Branching:</strong> More branching → lower Tg due to increased free volume between chains.</li>
+        <li><strong>Polarity / Intermolecular forces:</strong> Strong intermolecular forces (polar groups, H-bonding) → higher Tg.</li>
+      </ol>
+      <strong>Importance of Tg:</strong>
+      <ul>
+        <li>Determines whether polymer is used above Tg (rubbery — like polyisoprene for rubber) or below Tg (glassy — like polystyrene for hard plastics).</li>
+        <li>Helps in selecting polymers for specific temperature applications.</li>
+      </ul>
+    </div>
+    <div class="kw-block"><div class="ans-label">Keywords</div>Crystallinity, Chain flexibility, Molecular weight, Cross-linking, Plasticizers, Branching, Intermolecular forces, Free volume, Rubbery state, Glassy state</div>
+    <div class="trick-block"><div class="ans-label">Memory Trick</div><strong>CCMCPBP</strong> → Crystallinity, Chain flexibility, Molecular weight, Cross-linking, Plasticizers, Branching, Polarity</div>
+  </div>
+
+  <!-- Q4 Compounding -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Q4. Constituents Added During Compounding of Polymers</span>
+      <span class="freq-badge freq-high">3/4 Papers</span>
+      <span class="marks-tag">4 Marks</span>
+      <span class="stars">★★★★★</span>
+    </div>
+    <div class="ans-block">
+      <div class="ans-label">Full Exam Answer</div>
+      Compounding is the process of mixing polymers with various additives to improve/modify their properties.<br><br>
+      <table>
+        <tr><th>Constituent</th><th>Function</th><th>Example</th></tr>
+        <tr><td><strong>1. Plasticizers</strong></td><td>Increase flexibility and reduce brittleness; lower Tg</td><td>DOP (Di-octyl phthalate), DBP</td></tr>
+        <tr><td><strong>2. Fillers</strong></td><td>Increase hardness, strength; reduce cost</td><td>Carbon black, silica, chalk, clay</td></tr>
+        <tr><td><strong>3. Stabilizers</strong></td><td>Prevent degradation due to heat/UV/light</td><td>Lead salts, Tin compounds</td></tr>
+        <tr><td><strong>4. Lubricants</strong></td><td>Reduce friction during processing; prevent sticking</td><td>Stearic acid, Paraffin wax</td></tr>
+        <tr><td><strong>5. Colorants / Pigments</strong></td><td>Provide colour to polymer products</td><td>Organic dyes, Titanium dioxide (white)</td></tr>
+        <tr><td><strong>6. Flame Retardants</strong></td><td>Reduce flammability of polymers</td><td>Halogen compounds, Antimony oxide</td></tr>
+        <tr><td><strong>7. Antioxidants</strong></td><td>Prevent oxidative degradation</td><td>BHT (Butylated Hydroxy Toluene)</td></tr>
+        <tr><td><strong>8. Blowing Agents</strong></td><td>Create foam/cellular structure (for insulation)</td><td>Azodicarbonamide</td></tr>
+      </table>
+    </div>
+    <div class="kw-block"><div class="ans-label">Keywords</div>Plasticizers, Fillers, Stabilizers, Lubricants, Colorants, Flame retardants, Antioxidants, Blowing agents</div>
+    <div class="trick-block"><div class="ans-label">Memory Trick</div><strong>"P F S L C F A B"</strong> → Plasticizers, Fillers, Stabilizers, Lubricants, Colorants, Flame retardants, Antioxidants, Blowing agents</div>
+  </div>
+
+  <!-- Q5 Conducting Polymer Doping -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Q5. Methods of Doping — Intrinsically Conducting Polymers</span>
+      <span class="freq-badge freq-high">3/4 Papers</span>
+      <span class="marks-tag">4 Marks</span>
+      <span class="stars">★★★★★</span>
+    </div>
+    <div class="ans-block">
+      <div class="ans-label">Full Exam Answer</div>
+      <strong>Definition:</strong> Conducting polymers are those polymers which conduct electricity. Intrinsically conducting polymers (ICPs) have conjugated π-electron system in their backbone. Doping increases conductivity by oxidation or reduction.<br><br>
+      <strong>Types of Doping:</strong><br><br>
+      <strong>A) Chemical Doping:</strong>
+      <ol>
+        <li><strong>p-type doping (Oxidative doping):</strong> Polymer is oxidized by removing electrons. Dopant acts as oxidizing agent (e.g., AsF5, I2, Cl2). Creates positive charge (holes) in polymer chain → increases conductivity. Example: PANI + HCl → conducting emeraldine salt.</li>
+        <li><strong>n-type doping (Reductive doping):</strong> Polymer is reduced by adding electrons. Dopant acts as reducing agent (e.g., Na, K, Li). Creates negative charge in polymer → increases conductivity.</li>
+      </ol>
+      <strong>B) Electrochemical Doping:</strong>
+      <ul>
+        <li>Polymer film is used as electrode in electrochemical cell.</li>
+        <li>p-doping: polymer film at anode (oxidation).</li>
+        <li>n-doping: polymer film at cathode (reduction).</li>
+        <li>Advantage: Controllable and reversible doping.</li>
+      </ul>
+      <strong>C) Photo-doping:</strong>
+      <ul>
+        <li>UV/visible light irradiation causes electron-hole pair generation in the polymer.</li>
+        <li>Temporary effect — conductivity returns to original after removal of light.</li>
+      </ul>
+    </div>
+    <div class="kw-block"><div class="ans-label">Keywords</div>p-type doping, n-type doping, oxidation, reduction, conjugated π system, electrochemical doping, photo-doping, AsF5, PANI, emeraldine salt</div>
+    <div class="trick-block"><div class="ans-label">Memory Trick</div>p-type = Positive = Oxidation = removes electrons. n-type = Negative = Reduction = adds electrons. "OIL RIG" (Oxidation Is Loss, Reduction Is Gain)</div>
+  </div>
+
+  <!-- LCP -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Q6. Liquid Crystal Polymer (LCP) — Classification, Properties, Applications</span>
+      <span class="freq-badge freq-high">3/4 Papers</span>
+      <span class="marks-tag">4 Marks</span>
+      <span class="stars">★★★★☆</span>
+    </div>
+    <div class="ans-block">
+      <div class="ans-label">Full Exam Answer</div>
+      <strong>Definition:</strong> LCP are polymers that exist in a state intermediate between crystalline solid and isotropic liquid, exhibiting ordered molecular arrangement in liquid phase. They dissolve in solvent or melt under certain conditions of temperature, pressure, and concentration.<br><br>
+      <strong>Classification of LCP:</strong>
+      <ol>
+        <li><strong>Thermotropic LCP:</strong> Liquid crystal phase formed on heating (by temperature). E.g., Vectra, Kevlar. Commercially most important.</li>
+        <li><strong>Lyotropic LCP:</strong> Liquid crystal phase formed by dissolution in solvent. E.g., Kevlar dissolved in sulfuric acid.</li>
+      </ol>
+      <strong>Properties of LCP:</strong>
+      <ul>
+        <li>High strength and stiffness in flow direction</li>
+        <li>Low melt viscosity → easy processability</li>
+        <li>Excellent chemical and thermal resistance</li>
+        <li>Low coefficient of thermal expansion</li>
+        <li>Good dielectric properties</li>
+      </ul>
+      <strong>Applications of LCP:</strong>
+      <ol>
+        <li>LCD (Liquid Crystal Display) screens</li>
+        <li>Printed circuit boards (PCB substrates)</li>
+        <li>Fiber optic connectors</li>
+        <li>Aerospace components (missile guidance systems)</li>
+        <li>Medical devices and surgical tools</li>
+        <li>Microwave components in telecommunications</li>
+      </ol>
+    </div>
+    <div class="kw-block"><div class="ans-label">Keywords</div>Thermotropic, Lyotropic, Vectra, Kevlar, LCD, PCB substrate, anisotropic, dielectric properties, thermal resistance</div>
+  </div>
+
+  <!-- Self-healing -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Q7. Self-Healing Polymers — Definition, Examples, Applications</span>
+      <span class="freq-badge freq-med">2/4 Papers</span>
+      <span class="marks-tag">4 Marks</span>
+      <span class="stars">★★★★☆</span>
+    </div>
+    <div class="ans-block">
+      <div class="ans-label">Full Exam Answer</div>
+      <strong>Definition:</strong> Self-healing polymers (SHPs) are a class of smart polymers that exhibit excellent mechanical self-repair capability after being damaged, by restoring their original mechanical properties through physical or chemical processes.<br><br>
+      <strong>Mechanism:</strong> When damage occurs (crack), healing agents stored in microcapsules are released. These agents polymerize and fill the crack, restoring original properties.<br><br>
+      <strong>Examples:</strong>
+      <ul>
+        <li>Polyurethane-based self-healing polymers</li>
+        <li>Polyurea (crack-filling in coatings)</li>
+        <li>Epoxy resins with embedded microcapsules of DCPD (Dicyclopentadiene)</li>
+        <li>Hydrogen-bonded networks (supramolecular polymers)</li>
+      </ul>
+      <strong>Applications:</strong>
+      <ol>
+        <li>Self-healing coatings for cars and aircraft (scratch repair)</li>
+        <li>Self-healing electrodes for supercapacitors</li>
+        <li>Biomedical implants (self-repairing after mechanical damage)</li>
+        <li>Smart concrete with self-healing polymer additions</li>
+        <li>Self-healing cables and electronic encapsulation</li>
+        <li>Protective coatings in marine structures</li>
+      </ol>
+    </div>
+    <div class="kw-block"><div class="ans-label">Keywords</div>Microcapsules, DCPD, healing agent, supramolecular, polyurethane, self-repair, smart polymer</div>
+  </div>
+
+  <!-- Important definitions Unit 1 -->
+  <div class="section-head">Important Definitions — Unit 1</div>
+  <div class="card">
+    <table>
+      <tr><th>Term</th><th>University-Style Definition</th></tr>
+      <tr><td><strong>Monomer</strong></td><td>Smallest basic repeating unit with low molecular weight, having at least 2 reactive sites (functional groups or multiple bonds). e.g., Ethylene.</td></tr>
+      <tr><td><strong>Polymer</strong></td><td>A large molecule formed by joining many repeating monomer units through polymerization reaction, having high molecular weight. e.g., Polyethylene.</td></tr>
+      <tr><td><strong>Degree of Polymerization (n)</strong></td><td>Total number of repeating monomer units in the chain of a polymer. Formula: MW of polymer = MW of monomer × n.</td></tr>
+      <tr><td><strong>Glass Transition Temp (Tg)</strong></td><td>Temperature at which amorphous polymers undergo transformation from glassy solid state to rubbery, viscous state.</td></tr>
+      <tr><td><strong>Melt Flow Index (MFI)</strong></td><td>The amount of polymer (in grams) that flows in 10 minutes through a die of specific diameter under specified load and temperature. It measures ease of flow during processing.</td></tr>
+      <tr><td><strong>Composite Material</strong></td><td>A material made by combining two or more different materials with distinct physical/chemical properties, which when combined, produce a material with different properties from individual components.</td></tr>
+      <tr><td><strong>Electroluminescent Polymer</strong></td><td>Polymers that emit light when electric current is passed through them. e.g., PPV (Poly Para-phenylene Vinylene) used in OLED displays.</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ============================  UNIT 2  ============================ -->
+<div id="unit2" class="page">
+  <div class="section-head">Unit 2 — Nanomaterials &amp; Computing Technologies</div>
+
+  <!-- Optical Fiber -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Q1. Optical Fiber — Definition, Classification, Applications</span>
+      <span class="freq-badge freq-high">4/4 Papers</span>
+      <span class="marks-tag">4 Marks</span>
+      <span class="stars">★★★★★</span>
+    </div>
+    <div class="ans-block">
+      <div class="ans-label">Full Exam Answer</div>
+      <strong>Definition:</strong> Optical fiber is a fiber that transmits data using light pulses, travelling over distances of hundreds of miles with higher bandwidth and throughput rates than electrical cables. The core, cladding, and outer coating are the three components of an optical fibre.<br><br>
+      <strong>Structure:</strong> Core (carries light) → Cladding (reflects light back by total internal reflection) → Protective outer coating.<br><br>
+      <strong>Classification based on materials:</strong>
+      <ol>
+        <li><strong>Glass Fiber:</strong>
+          <ul>
+            <li>Core: SiO₂ (Silica) / Cladding: SiO₂</li>
+            <li>Core: GeO₂-SiO₂ / Cladding: SiO₂</li>
+          </ul>
+        </li>
+        <li><strong>Plastic Fiber:</strong>
+          <ul>
+            <li>Core: Polystyrene / Cladding: Methyl Methacrylate</li>
+            <li>Core: PMMA (Polymethyl Methacrylate) / Cladding: Co-polymer</li>
+          </ul>
+        </li>
+      </ol>
+      <strong>Applications of Optical Fiber:</strong>
+      <ol>
+        <li><strong>Communication:</strong> Transmission and reception in optical communication systems.</li>
+        <li><strong>Defence:</strong> Military and aerospace applications — hydrophones for SONAR, aviation wiring.</li>
+        <li><strong>Broadcasting:</strong> Delivering high-speed HDTV signals; cheaper than copper cables.</li>
+        <li><strong>Medical industry:</strong> Surgical lasers, endoscopes, biomedical lasers.</li>
+        <li><strong>Internet backbone:</strong> High-bandwidth internet connectivity.</li>
+        <li><strong>Data centers:</strong> Internal data transfer between server racks.</li>
+      </ol>
+    </div>
+    <div class="kw-block"><div class="ans-label">Keywords</div>Total internal reflection, core, cladding, SiO₂, GeO₂, PMMA, polystyrene, SONAR, endoscope, high bandwidth, HDTV</div>
+    <div class="trick-block"><div class="ans-label">Memory Trick</div>Fiber types = "G-P" (Glass-Plastic). Glass = SiO₂ core. Plastic = PMMA core. Applications = "C D B M" (Communication, Defence, Broadcasting, Medical)</div>
+  </div>
+
+  <!-- Memory building -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Q2. Memory Building in Computer — Tools &amp; Materials Used</span>
+      <span class="freq-badge freq-high">3/4 Papers</span>
+      <span class="marks-tag">4 Marks</span>
+      <span class="stars">★★★★★</span>
+    </div>
+    <div class="ans-block">
+      <div class="ans-label">Full Exam Answer</div>
+      <strong>Types of Memory in Computers:</strong>
+      <table>
+        <tr><th>Memory Type</th><th>Full Form</th><th>Materials Used</th><th>Key Feature</th></tr>
+        <tr><td><strong>RAM</strong></td><td>Random Access Memory</td><td>Silicon chips (MOSFET transistors), Aluminum/Copper interconnects</td><td>Volatile; fast; temporary storage</td></tr>
+        <tr><td><strong>ROM</strong></td><td>Read Only Memory</td><td>Silicon, Poly-Silicon (for programmed cells)</td><td>Non-volatile; permanent storage</td></tr>
+        <tr><td><strong>Flash Memory</strong></td><td>(NAND/NOR)</td><td>Silicon with floating gate transistors; SiO₂ as gate dielectric</td><td>Non-volatile; rewritable; USB drives, SSDs</td></tr>
+        <tr><td><strong>Hard Disk Drive</strong></td><td>HDD</td><td>Aluminum/glass disk coated with ferromagnetic material (Co-Fe alloy); read/write head uses GMR sensors (multilayer Fe/Cr)</td><td>Magnetic storage; non-volatile</td></tr>
+        <tr><td><strong>MRAM</strong></td><td>Magnetoresistive RAM</td><td>Magnetic tunnel junctions (MTJ): CoFeB (ferromagnet), MgO (insulating tunnel barrier)</td><td>Non-volatile; fast like RAM; no power needed to retain data</td></tr>
+        <tr><td><strong>Cache Memory</strong></td><td>SRAM</td><td>CMOS transistors (Si), Metal interconnects</td><td>Fastest memory; inside CPU</td></tr>
+      </table>
+    </div>
+    <div class="kw-block"><div class="ans-label">Keywords</div>MOSFET, Silicon, CoFeB, MgO tunnel barrier, GMR sensor, MRAM, floating gate, CMOS, ferromagnetic</div>
+    <div class="trick-block"><div class="ans-label">Memory Trick</div>"R R F H M C" → RAM, ROM, Flash, HDD, MRAM, Cache — 6 types in memory building hierarchy</div>
+  </div>
+
+  <!-- MRAM -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Q3. MRAM — Definition, Importance, Applications, Materials</span>
+      <span class="freq-badge freq-high">2/4 Papers</span>
+      <span class="marks-tag">4 Marks</span>
+      <span class="stars">★★★★☆</span>
+    </div>
+    <div class="ans-block">
+      <div class="ans-label">Full Exam Answer</div>
+      <strong>Definition:</strong> MRAM (Magnetoresistive Random Access Memory) is a non-volatile random access memory that uses magnetic elements (magnetic tunnel junctions) instead of electric charges to store data.<br><br>
+      <strong>Materials Used:</strong>
+      <ul>
+        <li>CoFeB (Cobalt-Iron-Boron) — ferromagnetic free layer</li>
+        <li>MgO — tunnel barrier (insulating layer, ~1nm thick)</li>
+        <li>CoFe — fixed ferromagnetic reference layer</li>
+      </ul>
+      <strong>Importance of MRAM:</strong>
+      <ol>
+        <li>Non-volatile: retains data even without power supply</li>
+        <li>Fast read/write speed comparable to SRAM</li>
+        <li>High endurance: can withstand unlimited read/write cycles</li>
+        <li>Low power consumption</li>
+        <li>Radiation-resistant: suitable for space applications</li>
+      </ol>
+      <strong>Applications:</strong>
+      <ol>
+        <li>Aerospace and defence systems</li>
+        <li>Industrial automation</li>
+        <li>IoT edge devices (requires non-volatile, low-power memory)</li>
+        <li>Embedded processors</li>
+        <li>Replacement for Flash memory in extreme conditions</li>
+      </ol>
+    </div>
+    <div class="kw-block"><div class="ans-label">Keywords</div>Non-volatile, magnetic tunnel junction (MTJ), CoFeB, MgO, ferromagnetic, spin polarization, non-volatile RAM</div>
+  </div>
+
+  <!-- Nano transistor -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Q4. Nano Transistor — Definition, Importance, Materials</span>
+      <span class="freq-badge freq-high">4/4 Papers (as 2-mark Q)</span>
+      <span class="marks-tag">2 Marks</span>
+      <span class="stars">★★★★★</span>
+    </div>
+    <div class="ans-block">
+      <div class="ans-label">Full Exam Answer</div>
+      <strong>Definition:</strong> A nano transistor is a semiconductor device at nanometer scale used to control or amplify electronic signals. These transistors are smaller than 100nm in size.<br><br>
+      <strong>Why Nano Transistor?</strong>
+      <ul>
+        <li>More transistors can be packed on a chip (Moore's Law)</li>
+        <li>Faster switching speed</li>
+        <li>Lower power consumption</li>
+        <li>Cheaper per transistor cost</li>
+      </ul>
+      <strong>Materials Used:</strong>
+      <ul>
+        <li>Silicon (Si) — traditional</li>
+        <li>Silicon-Germanium (SiGe) — high frequency</li>
+        <li>Gallium Arsenide (GaAs) — high electron mobility</li>
+        <li>Carbon Nanotubes (CNTs) — future nano transistors</li>
+        <li>Graphene — 2D material with exceptional conductivity</li>
+      </ul>
+    </div>
+    <div class="kw-block"><div class="ans-label">Keywords</div>Nanometer scale, Moore's Law, SiGe, GaAs, CNT, Graphene, MOSFET, FinFET</div>
+  </div>
+
+  <!-- DNA Computing -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Q5. DNA Computing — Definition, Applications</span>
+      <span class="freq-badge freq-med">2/4 Papers</span>
+      <span class="marks-tag">4 Marks</span>
+      <span class="stars">★★★★☆</span>
+    </div>
+    <div class="ans-block">
+      <div class="ans-label">Full Exam Answer</div>
+      <strong>Definition:</strong> DNA Computing is a natural computing method that uses the unique molecular properties of DNA to perform arithmetic operations by replacing traditional silicon chips with biochips. DNA can store 10⁸ terabytes of data in 1 gram of DNA.<br><br>
+      <strong>Why DNA Computing?</strong>
+      <ol>
+        <li>Silicon computers have limited speed and cannot be miniaturized beyond a point.</li>
+        <li>DNA has massively parallel processing ability — trillions of strands can work simultaneously.</li>
+        <li>Extremely high information storage density.</li>
+      </ol>
+      <strong>Applications:</strong>
+      <ol>
+        <li><strong>Security/Cryptography:</strong> DNA algorithms are used in intrusion detection systems (IDS).</li>
+        <li><strong>Clustering:</strong> Deriving meaningful relationships in complex data using DNA-based structures and algorithms.</li>
+        <li><strong>Medical diagnostics:</strong> DNA computing used in disease detection biochips.</li>
+        <li><strong>Molecular robotics:</strong> DNA-based nanobots for drug delivery.</li>
+      </ol>
+      <strong>Drawbacks:</strong> Complex and expensive tools needed; probability of mismatching/errors increases exponentially.
+    </div>
+    <div class="kw-block"><div class="ans-label">Keywords</div>Biochip, molecular properties, parallel processing, IDS, cryptography, 10⁸ terabytes, nucleotides, Watson-Crick base pairing</div>
+  </div>
+
+  <!-- Important Definitions Unit 2 -->
+  <div class="section-head">Important Definitions — Unit 2</div>
+  <div class="card">
+    <table>
+      <tr><th>Term</th><th>Definition</th></tr>
+      <tr><td><strong>Nanomaterial</strong></td><td>A set of substances where at least one dimension is in the range of 1–100 nm. They show unique optical, electrical, and magnetic properties different from bulk materials.</td></tr>
+      <tr><td><strong>Nano Computing</strong></td><td>The use of nanotechnology in computer science to create more efficient computing components at nanometer scale. Categories: Molecular, Quantum, NEMS, and DNA-based nano computing.</td></tr>
+      <tr><td><strong>Quantum Computing</strong></td><td>A type of computing that uses quantum bits (qubits), which can be in superposition of 0 and 1 simultaneously, allowing parallel processing of exponentially more data than classical computers.</td></tr>
+      <tr><td><strong>Nano Optics</strong></td><td>The field that studies interaction of light with nanoparticles of materials. Materials used show unique optical properties at nanoscale due to surface plasmon resonance.</td></tr>
+      <tr><td><strong>Nano transistor</strong></td><td>A semiconductor device at nanometer scale (below 100nm) used to control or amplify electronic signals.</td></tr>
+      <tr><td><strong>Zero Dimensional Nanomaterial</strong></td><td>Nanomaterial where all three dimensions are at nanoscale. Examples: Nano dots, Quantum dots, Fullerenes (C₆₀ bucky balls).</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ============================  UNIT 3  ============================ -->
+<div id="unit3" class="page">
+  <div class="section-head">Unit 3 — Corrosion Prevention Techniques</div>
+
+  <!-- Sacrificial anode -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Q1. Sacrificial Anode Cathodic Protection — Diagram, Method, Applications</span>
+      <span class="freq-badge freq-high">3/4 Papers</span>
+      <span class="marks-tag">4 Marks</span>
+      <span class="stars">★★★★★</span>
+    </div>
+    <div class="ans-block">
+      <div class="ans-label">Full Exam Answer</div>
+      <strong>Principle of Cathodic Protection:</strong> The metal to be protected is forced to behave as cathode, so it does not undergo oxidation/corrosion.<br><br>
+      <strong>Method (Sacrificial Anode):</strong>
+      <ol>
+        <li>The metallic structure to be protected is connected to an active metal (Zn, Al, or Mg) by an insulated wire.</li>
+        <li>The more active metal acts as <strong>anode (sacrificial)</strong> and gets corroded, while the main metal (cathode) remains protected.</li>
+        <li>The sacrificial anode is placed in <strong>backfill (coal + NaCl)</strong> to increase electrical contact.</li>
+        <li>When sacrificial metal is completely consumed, it is replaced by a fresh piece.</li>
+      </ol>
+      <strong>Diagram description:</strong> Underground pipeline (cathode) connected via insulated wire to Zinc/Mg block (anode) placed in backfill material.<br><br>
+      <strong>Applications:</strong>
+      <ol>
+        <li>Buried steel pipelines</li>
+        <li>Ship hull (Magnesium/Zinc rods bolted to sides)</li>
+        <li>Hot water tanks (Zinc rods inserted)</li>
+        <li>Buried cables</li>
+        <li>Marine offshore structures</li>
+      </ol>
+    </div>
+    <div class="kw-block"><div class="ans-label">Keywords</div>Sacrificial anode, cathode, backfill (coal + NaCl), Zinc, Magnesium, Aluminum, insulated wire, more active metal, anodic metal</div>
+    <div class="trick-block"><div class="ans-label">Memory Trick</div>"Sacrifice Zinc to save Iron" — the less valuable metal (Zn/Mg) sacrifices itself to protect the important structure (iron pipe/ship).</div>
+    <div class="warn-block"><div class="ans-label">Common Mistake</div>Don't confuse sacrificial anode with impressed current method. Sacrificial = natural galvanic effect, no DC supply needed. Impressed current = external DC supply needed.</div>
+  </div>
+
+  <!-- Impressed current -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Q2. Impressed Current Cathodic Protection — Diagram, Method, Applications</span>
+      <span class="freq-badge freq-med">2/4 Papers</span>
+      <span class="marks-tag">4 Marks</span>
+      <span class="stars">★★★★☆</span>
+    </div>
+    <div class="ans-block">
+      <div class="ans-label">Full Exam Answer</div>
+      <strong>Method:</strong>
+      <ol>
+        <li>An impressed current is applied in <strong>opposite direction</strong> to nullify the corrosion current.</li>
+        <li>This converts the corroding metal from anode → cathode.</li>
+        <li>Impressed current is derived from a D.C. source.</li>
+        <li>D.C. is given to an <strong>insoluble anode</strong> (graphite, stainless steel, or scrap iron) buried in soil.</li>
+        <li>The <strong>negative terminal</strong> of D.C. is connected to the pipeline to be protected.</li>
+      </ol>
+      <strong>Applications:</strong>
+      <ol>
+        <li>Open water box coolers</li>
+        <li>Water tanks</li>
+        <li>Buried water or gas pipelines</li>
+        <li>Condensers</li>
+        <li>Transmission line towers</li>
+        <li>Marine piers and Laid-up ships</li>
+      </ol>
+    </div>
+    <div class="kw-block"><div class="ans-label">Keywords</div>Impressed current, D.C. source, insoluble anode, graphite, negative terminal, nullify corrosion current, active to cathode</div>
+  </div>
+
+  <!-- Anodic vs Cathodic Coating -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Q3. Anodic vs Cathodic Coating — Why Anodic is Better</span>
+      <span class="freq-badge freq-high">3/4 Papers</span>
+      <span class="marks-tag">4 Marks</span>
+      <span class="stars">★★★★★</span>
+    </div>
+    <div class="ans-block">
+      <div class="ans-label">Full Exam Answer</div>
+      <strong>Metallic Coating Definition:</strong> Application of a thin layer of metal on base metal to protect it from corrosion.<br><br>
+      <table>
+        <tr><th>Point</th><th>Anodic Coating</th><th>Cathodic Coating</th></tr>
+        <tr><td>Position in galvanic series</td><td>Coating metal is HIGHER (more active) than base metal</td><td>Coating metal is LOWER (less active) than base metal</td></tr>
+        <tr><td>Example</td><td>Zinc/Al/Cr coated on Steel</td><td>Tin coated on Steel; Ag/Au on brass</td></tr>
+        <tr><td>When coating ruptures</td><td>Coating metal (anode) corrodes and PROTECTS base metal</td><td>Base metal becomes anode and CORRODES (intense pitting)</td></tr>
+        <tr><td>Reliability</td><td>More reliable</td><td>Less reliable</td></tr>
+        <tr><td>Method</td><td>Galvanizing process</td><td>Tinning process</td></tr>
+      </table>
+      <br>
+      <strong>Why Anodic Coating is Better:</strong> Even if the coating is ruptured/damaged, the coating metal (Zn/Al) being more active acts as anode and continues to corrode, protecting the base metal (steel). Thus, protection continues even after damage. In cathodic coating, once coating is ruptured, base metal gets exposed and intensely corroded.
+    </div>
+    <div class="kw-block"><div class="ans-label">Keywords</div>Galvanic series, anodic, cathodic, galvanizing, tinning, pitting, ruptured, more active, less active, sacrificial protection even after rupture</div>
+    <div class="trick-block"><div class="ans-label">Memory Trick</div>"Anodic = Always protects even after damage (like a selfless guardian). Cathodic = Can only protect when intact (breaks down when damaged)."</div>
+  </div>
+
+  <!-- Factors affecting corrosion -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Q4. Factors Affecting Rate of Corrosion — Nature of Metal</span>
+      <span class="freq-badge freq-high">3/4 Papers</span>
+      <span class="marks-tag">4 Marks</span>
+      <span class="stars">★★★★★</span>
+    </div>
+    <div class="ans-block">
+      <div class="ans-label">Full Exam Answer</div>
+      <strong>Factors Based on Nature of Metal:</strong>
+      <ol>
+        <li><strong>Position in Galvanic Series:</strong> More active metal (higher in series) corrodes faster. Greater the separation between two metals in galvanic series, faster the corrosion of anodic metal.</li>
+        <li><strong>Relative area of anode and cathode:</strong> Larger cathode area relative to anode → faster and more localized corrosion of anode. Small anode + Large cathode = severe corrosion.</li>
+        <li><strong>Purity of Metal:</strong> Impurities form galvanic microcells. If impurity is passive (lower in series), metal corrodes. More impurities → more corrosion.</li>
+        <li><strong>Physical State of Metal:</strong> Smaller grain size → greater rate of corrosion (e.g., steel corrodes faster than cast iron). Stressed areas act as anode → more corrosion.</li>
+        <li><strong>Nature of Oxide Film:</strong> Protective non-porous oxide film → no further corrosion. Porous oxide film (Fe, Mg, Na) → corrosion continues until complete destruction.</li>
+        <li><strong>Over Voltage:</strong> Metals with higher over voltage (Zn, Pb, Cr, Ni) show less corrosion in acidic medium.</li>
+      </ol>
+    </div>
+    <div class="kw-block"><div class="ans-label">Keywords</div>Galvanic series, anodic area, cathodic area, grain size, oxide film, porous, non-porous, over voltage, impurities, stressed part</div>
+    <div class="trick-block"><div class="ans-label">Memory Trick</div><strong>"G A P P N O"</strong> → Galvanic series, Area ratio, Purity, Physical state, Nature of oxide film, Overvoltage</div>
+  </div>
+
+  <!-- Galvanizing vs Tinning -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Q5. Galvanizing — Definition, Process, Applications</span>
+      <span class="freq-badge freq-high">3/4 Papers</span>
+      <span class="marks-tag">2-4 Marks</span>
+      <span class="stars">★★★★★</span>
+    </div>
+    <div class="ans-block">
+      <div class="ans-label">Full Exam Answer</div>
+      <strong>Definition:</strong> Coating of zinc on iron or steel is called galvanizing. It is an anodic coating method.<br><br>
+      <strong>Process:</strong>
+      <ol>
+        <li>Steel article is cleaned with dil. H₂SO₄ (pickling).</li>
+        <li>Washed with water and dried.</li>
+        <li>Dipped in bath of molten zinc at <strong>425–450°C</strong>.</li>
+        <li>Surface covered with flux like <strong>NH₄Cl</strong> to prevent oxidation.</li>
+        <li>After removal, article is rolled to make uniform coating and remove excess zinc.</li>
+        <li>Cooled slowly.</li>
+      </ol>
+      <strong>Applications:</strong>
+      <ul>
+        <li>G.I. sheets, pipes, wires, buckets, tubes, screws, nails</li>
+        <li>Precision instruments and computer casings</li>
+        <li>Rust-resistant alternative to PVC piping</li>
+      </ul>
+      <strong>Note:</strong> G.I. vessels NOT used for storing food (zinc reacts with food to form poisonous products).
+    </div>
+    <div class="kw-block"><div class="ans-label">Keywords</div>Zinc coating, anodic coating, 425–450°C, NH₄Cl flux, dil. H₂SO₄ pickling, G.I. sheets, uniform rolling</div>
+  </div>
+
+  <!-- Corrosion definitions -->
+  <div class="section-head">Important Definitions — Unit 3</div>
+  <div class="card">
+    <table>
+      <tr><th>Term</th><th>Definition</th></tr>
+      <tr><td><strong>Corrosion</strong></td><td>Destruction of a metal due to chemical or electrochemical reaction that takes place on the surface of metal with its environment. e.g., Rusting of iron, green layer on copper.</td></tr>
+      <tr><td><strong>Dry Corrosion</strong></td><td>Corrosion that occurs due to direct attack of atmospheric gases (O₂, CO₂, SO₂, H₂S) on the metal surface, without the presence of moisture/liquid.</td></tr>
+      <tr><td><strong>Wet/Electrochemical Corrosion</strong></td><td>Corrosion of metal by aqueous conducting medium, with formation of anodic and cathodic areas, resulting in flow of current. Also called immersed corrosion.</td></tr>
+      <tr><td><strong>Pilling-Bedworth Rule</strong></td><td>If volume of metal oxide > volume of metal consumed → non-porous protective film (PBR &gt; 1). If PBR &lt; 1 → porous film. If 1 &lt; PBR &lt; 1.45 → truly protective non-porous film.</td></tr>
+      <tr><td><strong>Tinning</strong></td><td>Coating of tin on steel. Cathodic coating process. Performed at 240°C. Used for food containers as tin is non-toxic.</td></tr>
+      <tr><td><strong>Anodizing</strong></td><td>Formation of base metal oxide coating on metal surface by electrolysis in oxidizing aqueous medium, with base metal as anode. Makes the surface porous then sealed with dyes.</td></tr>
+      <tr><td><strong>Electroplating</strong></td><td>Method of coating in which a layer of coating metal is deposited on base metal (cathode) using principle of electrolysis. Article is connected to negative terminal of D.C. supply.</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ============================  UNIT 4  ============================ -->
+<div id="unit4" class="page">
+  <div class="section-head">Unit 4 — Analysis of Data and Probability</div>
+
+  <!-- Variance/SD Numerical -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Q1. Population Variance &amp; Standard Deviation — Numerical (APPEARED IN ALL 4 PAPERS!)</span>
+      <span class="freq-badge freq-high">4/4 Papers — 100%</span>
+      <span class="marks-tag">4 Marks</span>
+      <span class="stars">★★★★★</span>
+    </div>
+    <div class="ans-block">
+      <div class="ans-label">Formula &amp; Step-by-Step Method</div>
+      <strong>Population Variance (σ²) = Σ(xi - μ)² / N</strong><br>
+      <strong>Population Standard Deviation (σ) = √(Variance)</strong><br>
+      <strong>Mean (μ) = Σxi / N</strong><br><br>
+      <strong>Step-by-step (Example: First 10 odd integers: 1,3,5,7,9,11,13,15,17,19)</strong><br>
+      Step 1: Find Mean: μ = (1+3+5+7+9+11+13+15+17+19)/10 = 100/10 = <strong>10</strong><br>
+      Step 2: Find (xi - μ)² for each:
+      <table>
+        <tr><th>xi</th><th>xi - μ</th><th>(xi - μ)²</th></tr>
+        <tr><td>1</td><td>-9</td><td>81</td></tr>
+        <tr><td>3</td><td>-7</td><td>49</td></tr>
+        <tr><td>5</td><td>-5</td><td>25</td></tr>
+        <tr><td>7</td><td>-3</td><td>9</td></tr>
+        <tr><td>9</td><td>-1</td><td>1</td></tr>
+        <tr><td>11</td><td>+1</td><td>1</td></tr>
+        <tr><td>13</td><td>+3</td><td>9</td></tr>
+        <tr><td>15</td><td>+5</td><td>25</td></tr>
+        <tr><td>17</td><td>+7</td><td>49</td></tr>
+        <tr><td>19</td><td>+9</td><td>81</td></tr>
+      </table>
+      Step 3: Σ(xi - μ)² = 81+49+25+9+1+1+9+25+49+81 = <strong>330</strong><br>
+      Step 4: Variance = 330/10 = <strong>33</strong><br>
+      Step 5: SD = √33 = <strong>5.74</strong><br><br>
+      <strong>Other repeated numericals from PYQs:</strong>
+      <ul>
+        <li>First 10 even integers (2,4,6...20): Mean=11, Variance=33, SD=5.74</li>
+        <li>Temperatures: 35,38,36,30,27,24,21,27 (Surat): Mean=29.75, Var≈33, SD≈5.74</li>
+        <li>Temperatures: 33,33,29,29,27,26,27,32 (Mumbai): Mean=29.5, Var=7, SD=2.645</li>
+        <li>Data: 2,7,4,9,10: Mean=6.4, Var=7.44, SD=2.73</li>
+      </ul>
+    </div>
+    <div class="kw-block"><div class="ans-label">Key Steps to Write</div>State formula clearly → Find Mean → Make table of deviations → Compute squares → Sum → Divide by N → Take sqrt. Write each step with label.</div>
+    <div class="warn-block"><div class="ans-label">Common Mistakes</div>1. Using N-1 instead of N (use N for population variance, N-1 for sample variance). 2. Not showing the table — always make xi, xi-μ, (xi-μ)² table. 3. Arithmetic errors — double-check sum of squares.</div>
+    <div class="trick-block"><div class="ans-label">Memory Trick</div>"M → D → D² → Sum → Divide → Root" = Mean, Deviation, Deviation squared, Sum them, Divide by N, Take square root.</div>
+  </div>
+
+  <!-- Mean Median Mode -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Q2. Mean, Median, Mode, Range — Definitions + Numerical</span>
+      <span class="freq-badge freq-high">3/4 Papers</span>
+      <span class="marks-tag">2+4 Marks</span>
+      <span class="stars">★★★★★</span>
+    </div>
+    <div class="ans-block">
+      <div class="ans-label">Definitions &amp; Formulas</div>
+      <strong>Mean</strong> = Sum of all values / Number of values = Σxi / N<br>
+      <strong>Median</strong> = Middle value after sorting. If n is odd: middle term. If n is even: avg of (n/2)th and (n/2+1)th term.<br>
+      <strong>Mode</strong> = Most frequently occurring value in the data set.<br>
+      <strong>Range</strong> = Maximum value − Minimum value<br><br>
+      <strong>Solved Example (from PYQ Dec 2025):</strong> 34,39,46,30,32,25,33,41,23,17,18,42,26,31,32,29,32,21,36,32,35<br>
+      Sorted: 17,18,21,23,25,26,29,30,31,32,32,32,32,33,34,35,36,39,41,42,46 (n=21)<br>
+      Range = 46-17 = <strong>29</strong><br>
+      Mean = sum/21 = 651/21 = <strong>31</strong><br>
+      Median = 11th term (middle of 21) = <strong>32</strong><br>
+      Mode = <strong>32</strong> (appears 4 times)
+    </div>
+    <div class="trick-block"><div class="ans-label">Memory Trick</div>Mean = average, Median = middle (sort first!), Mode = most (M-M-M = mnemonic). For Range: think "Hi minus Lo".</div>
+  </div>
+
+  <!-- Skewness -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Q3. Skewness — Types, Significance</span>
+      <span class="freq-badge freq-high">3/4 Papers</span>
+      <span class="marks-tag">4 Marks</span>
+      <span class="stars">★★★★★</span>
+    </div>
+    <div class="ans-block">
+      <div class="ans-label">Full Exam Answer</div>
+      <strong>Definition:</strong> Skewness is a statistical measure of the asymmetry in a probability distribution of a real-valued random variable. It measures the degree of asymmetry of a distribution around its mean.<br><br>
+      <strong>Types of Skewness:</strong>
+      <ol>
+        <li><strong>Positive Skewness (Right-skewed):</strong>
+          <ul>
+            <li>Long tail towards the RIGHT side of graph.</li>
+            <li>Data concentrated on LEFT side.</li>
+            <li>Order: <strong>Mean &gt; Median &gt; Mode</strong></li>
+            <li>Example: Income distribution (most people earn less, few earn very high).</li>
+          </ul>
+        </li>
+        <li><strong>Negative Skewness (Left-skewed):</strong>
+          <ul>
+            <li>Long tail towards the LEFT side of graph.</li>
+            <li>Data concentrated on RIGHT side.</li>
+            <li>Order: <strong>Mode &gt; Median &gt; Mean</strong></li>
+          </ul>
+        </li>
+        <li><strong>No Skewness (Normal / Symmetric):</strong>
+          <ul>
+            <li>Data points arranged equally on both sides.</li>
+            <li><strong>Mean = Median = Mode</strong></li>
+            <li>Bell-shaped curve.</li>
+          </ul>
+        </li>
+      </ol>
+      <strong>Significance / Advantages:</strong>
+      <ol>
+        <li>Helps identify direction and degree of asymmetry in data.</li>
+        <li>Used in finance to assess investment risk and return distribution.</li>
+        <li>In manufacturing, helps detect production quality issues.</li>
+        <li>Helps decide appropriate statistical tests for data analysis.</li>
+      </ol>
+    </div>
+    <div class="kw-block"><div class="ans-label">Keywords</div>Asymmetry, positive/right skew, negative/left skew, symmetric distribution, Mean &gt; Median &gt; Mode (positive), Mode &gt; Median &gt; Mean (negative)</div>
+    <div class="trick-block"><div class="ans-label">Memory Trick</div>Positive skew = tail on Positive side (right) = rich income outliers. Negative skew = tail on Negative side (left). For order: Positive = alphabetical M&gt;Med&gt;Mod (no, wrong). Actually: Pos skew: Mean pulled RIGHT by outliers, so Mean &gt; Median &gt; Mode. Remember: "right tail pulls mean right".</div>
+  </div>
+
+  <!-- Correlation vs Regression -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Q4. Correlation vs Regression — Difference (4 Points)</span>
+      <span class="freq-badge freq-high">3/4 Papers</span>
+      <span class="marks-tag">4 Marks</span>
+      <span class="stars">★★★★★</span>
+    </div>
+    <div class="ans-block">
+      <div class="ans-label">Full Exam Answer</div>
+      <table>
+        <tr><th>Point</th><th>Correlation</th><th>Regression</th></tr>
+        <tr><td><strong>1. Definition</strong></td><td>Measurement used to quantify the relationship between variables (strength &amp; direction)</td><td>Measurement used to quantify HOW MUCH change in one variable affects another</td></tr>
+        <tr><td><strong>2. Purpose</strong></td><td>Determines if two variables have a linear relationship (related or not)</td><td>Describes cause &amp; effect; used to predict/estimate unknown variable</td></tr>
+        <tr><td><strong>3. Variables</strong></td><td>Variables CAN be interchanged (symmetric)</td><td>Variables CANNOT be interchanged (x is independent, y is dependent)</td></tr>
+        <tr><td><strong>4. Output / Measure</strong></td><td>Gives correlation coefficient (r), a signed numerical value −1 to +1. Best measure: Pearson's coefficient</td><td>Gives regression equation (Y = a + bX). Best technique: Least squares method</td></tr>
+      </table>
+    </div>
+    <div class="kw-block"><div class="ans-label">Keywords</div>Correlation coefficient, Pearson's coefficient, least squares method, independent variable, dependent variable, Y = a + bX, cause and effect, symmetric, linear relationship</div>
+    <div class="trick-block"><div class="ans-label">Memory Trick</div>"Correlation = Connection (strength). Regression = Reason (cause-effect)." Correlation is symmetric (both ways), Regression is one-way (X predicts Y).</div>
+  </div>
+
+  <!-- Kurtosis -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Q5. Kurtosis — Types, Significance</span>
+      <span class="freq-badge freq-med">2/4 Papers</span>
+      <span class="marks-tag">4 Marks</span>
+      <span class="stars">★★★★☆</span>
+    </div>
+    <div class="ans-block">
+      <div class="ans-label">Full Exam Answer</div>
+      <strong>Definition:</strong> Kurtosis measures the shape and peakness of a dataset's frequency distribution, indicating the extent to which data points differ from a normal distribution (outliers). Expected value = 3.<br><br>
+      <strong>Types:</strong>
+      <ol>
+        <li><strong>Mesokurtic (Normal):</strong> Kurtosis ≈ 0 (or = 3). Normal bell curve. Data follows normal distribution.</li>
+        <li><strong>Leptokurtic (Positive):</strong> Kurtosis &gt; 3 (value more than normal). Steep/sharp peak. Heavy tails. Large number of outliers. Example: stock market returns during crisis.</li>
+        <li><strong>Platykurtic (Negative):</strong> Kurtosis &lt; 3 (value less than normal). Flat/pale peak. Light tails. Small number of outliers.</li>
+      </ol>
+      <strong>Significance:</strong>
+      <ol>
+        <li>Describes "fatness" of tails in probability distributions.</li>
+        <li>Risk measurement — indicates how often investment price moves dramatically (financial risk analysis).</li>
+        <li>Helps identify outliers in a dataset.</li>
+      </ol>
+    </div>
+    <div class="kw-block"><div class="ans-label">Keywords</div>Peakness, Mesokurtic, Leptokurtic, Platykurtic, outliers, expected value = 3, heavy tails, fat tails, normal distribution</div>
+    <div class="trick-block"><div class="ans-label">Memory Trick</div>"MLP" → Meso (normal), Lepto (sharp/high — leap up), Platy (flat — like a platypus). Leptokurtic &gt; 3, Platykurtic &lt; 3.</div>
+  </div>
+
+  <!-- Definitions Unit 4 -->
+  <div class="section-head">Important Definitions — Unit 4</div>
+  <div class="card">
+    <table>
+      <tr><th>Term</th><th>Definition</th></tr>
+      <tr><td><strong>Variance</strong></td><td>A measurement of how far each number in a data set is from the mean. Formula: σ² = Σ(xi-μ)²/N. It is the square of standard deviation.</td></tr>
+      <tr><td><strong>Standard Deviation</strong></td><td>Statistical measure used to calculate the average deviation from the mean. σ = √(Variance). Shows typical deviation from mean.</td></tr>
+      <tr><td><strong>Sampling Error</strong></td><td>Errors related to the nature or size of the sample selected for study. Formula: Sampling Error = Estimated Value – Actual Value.</td></tr>
+      <tr><td><strong>Non-Sampling Error</strong></td><td>Errors related to the collection of data (not dependent on sample size). Can occur in any kind of survey or study.</td></tr>
+      <tr><td><strong>Uncertainty</strong></td><td>Uncertainty in statistics is measured by the amount of error in an estimate of the mean or average value of a population.</td></tr>
+      <tr><td><strong>Residual</strong></td><td>Difference between an observed value and a predicted value in regression analysis. Residual = Observed value – Predicted value.</td></tr>
+      <tr><td><strong>Calibration</strong></td><td>The comparison of a measurement device against a known standard to ensure it is operating safely and efficiently. It restores accuracy of instruments.</td></tr>
+      <tr><td><strong>Linear Regression</strong></td><td>Used to predict relationship between two variables by applying a linear equation Y = a + bX, where b is slope and a is intercept.</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ============================  UNIT 5  ============================ -->
+<div id="unit5" class="page">
+  <div class="section-head">Unit 5 — Materials for Computers and Communications</div>
+
+  <!-- Li-ion battery -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Q1. Li-Ion Battery — Components, Advantages, Applications</span>
+      <span class="freq-badge freq-high">4/4 Papers</span>
+      <span class="marks-tag">4 Marks</span>
+      <span class="stars">★★★★★</span>
+    </div>
+    <div class="ans-block">
+      <div class="ans-label">Full Exam Answer</div>
+      <strong>Definition:</strong> A lithium-ion battery is a rechargeable secondary battery that uses lithium ions as primary charge carriers between cathode and anode during charge/discharge cycles.<br><br>
+      <strong>Key Components:</strong>
+      <ol>
+        <li><strong>Cathode (+):</strong> LiCoO₂ (Lithium Cobalt Oxide) — source of lithium ions. Determines voltage &amp; capacity.</li>
+        <li><strong>Anode (-):</strong> Graphite (LiC₆) — stores Li ions during charging.</li>
+        <li><strong>Electrolyte:</strong> Lithium salt in organic solvent — channel between cathode and anode.</li>
+        <li><strong>Separator:</strong> Separates anode and cathode materials.</li>
+      </ol>
+      <strong>Reaction:</strong> CoO₂ + Li⁺ + e⁻ → LiCoO₂ (cathode reduction); LiC₆ → C₆ + Li⁺ + e⁻ (anode oxidation)<br><br>
+      <strong>Advantages of Li-Ion Battery:</strong>
+      <ol>
+        <li><strong>Low Maintenance:</strong> No periodic top-up or discharge required (unlike lead-acid batteries).</li>
+        <li><strong>Available in Various Sizes:</strong> From smart watch to electric vehicles.</li>
+        <li><strong>High Energy Density:</strong> Can provide power for long duration; compact size.</li>
+        <li><strong>Low Self-Discharge Rate:</strong> Only ~1-2% per month after initial 4 hours.</li>
+        <li><strong>High Voltage:</strong> 3.6V constant per cell (vs 1.5V for conventional).</li>
+      </ol>
+      <strong>Applications:</strong> Smartphones, laptops, EVs, pacemakers, portable power banks, solar energy storage, drones, aerospace.
+    </div>
+    <div class="kw-block"><div class="ans-label">Keywords</div>LiCoO₂, Graphite anode, 3.6V, low self-discharge, high energy density, electrolyte, separator, rechargeable, non-volatile ions</div>
+    <div class="trick-block"><div class="ans-label">Memory Trick</div>Advantages: "L A H L H" → Low maintenance, Available in sizes, High energy density, Low self-discharge, High voltage</div>
+  </div>
+
+  <!-- Photovoltaic materials -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Q2. Photovoltaic Materials — Electronic, Optical, Transport Properties</span>
+      <span class="freq-badge freq-high">4/4 Papers</span>
+      <span class="marks-tag">4 Marks</span>
+      <span class="stars">★★★★★</span>
+    </div>
+    <div class="ans-block">
+      <div class="ans-label">Full Exam Answer</div>
+      <strong>Definition:</strong> Photovoltaic materials are semiconductor materials that convert solar energy (light energy) into electrical energy through the photovoltaic effect. Materials used: Silicon (mono/poly/amorphous), GaAs, Metal chalcogenides.<br><br>
+      <strong>A. Electronic Properties:</strong>
+      <ol>
+        <li><strong>Band Gap:</strong> Energy difference between valence band and conduction band. Suitable band gap is crucial for efficient photon absorption. Silicon: 1.1 eV.</li>
+        <li><strong>Carrier Mobility:</strong> Ability of charge carriers (electrons/holes) to move through material. Higher mobility → better efficiency.</li>
+        <li><strong>Doping:</strong> N-type (phosphorus/arsenic added — extra electrons) and P-type (boron/gallium added — creates holes) for creating p-n junctions.</li>
+      </ol>
+      <strong>B. Optical Properties:</strong>
+      <ol>
+        <li>Absorption Spectrum, Band Gap Energy, Quantum Efficiency</li>
+        <li>Reflectance and Transmittance, Anti-Reflective Coatings</li>
+        <li>Refractive Index, Photoluminescence, Light Trapping</li>
+      </ol>
+      <strong>C. Transport Properties:</strong>
+      <ol>
+        <li><strong>Photo-generation:</strong> Absorption of photons creates electron-hole pairs (excitons).</li>
+        <li><strong>Doping:</strong> Creates n-type and p-type regions influencing charge carrier distribution.</li>
+        <li><strong>Junctions:</strong> p-n junctions separate charge carriers, creating potential difference for electricity flow.</li>
+        <li><strong>Excitation:</strong> Photons excite electrons from valence to conduction band.</li>
+      </ol>
+      <strong>Advantages:</strong> Renewable energy, no pollution, low maintenance, long life. <br>
+      <strong>Disadvantages:</strong> High initial cost, weather dependent, requires large area.
+    </div>
+    <div class="kw-block"><div class="ans-label">Keywords</div>Photovoltaic effect, band gap, carrier mobility, p-n junction, exciton, Silicon, GaAs, 1.1 eV, N-type, P-type, absorption spectrum, anti-reflective coating</div>
+    <div class="trick-block"><div class="ans-label">Memory Trick</div>Properties = "EOT" → Electronic (band gap, doping, mobility), Optical (absorption, quantum efficiency), Transport (photo-generation, junctions, excitation)</div>
+  </div>
+
+  <!-- Photonics -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Q3. Photonics — Materials, Applications in Computers, Advantages</span>
+      <span class="freq-badge freq-high">3/4 Papers</span>
+      <span class="marks-tag">4 Marks</span>
+      <span class="stars">★★★★★</span>
+    </div>
+    <div class="ans-block">
+      <div class="ans-label">Full Exam Answer</div>
+      <strong>Definition:</strong> Photonics is a branch of physics and technology that studies the control and detection of light particles (photons) and their interactions with various materials.<br><br>
+      <strong>Photonic Materials:</strong>
+      <ol>
+        <li><strong>Semiconductors:</strong> LEDs, lasers, photo-detectors (GaAs, Si).</li>
+        <li><strong>Crystals:</strong> Used in lasers, optics, frequency conversion.</li>
+        <li><strong>Optical Fiber:</strong> Glass/plastic fibers for transmitting light signals in telecommunications.</li>
+        <li><strong>Meta-Materials:</strong> Engineered with designed optical properties, enabling unusual control over light.</li>
+      </ol>
+      <strong>Applications of Photonics in Computers:</strong>
+      <ol>
+        <li><strong>Optical Interconnects:</strong> Replace copper wires for faster and energy-efficient data transfer between components.</li>
+        <li><strong>Photonic Integrated Circuits:</strong> Combine optical and electronic components on single chip, enhancing computing power.</li>
+        <li><strong>Quantum Computing:</strong> Photonics provides a promising method for quantum computing using light particles.</li>
+      </ol>
+      <strong>Advantages of Photonic Materials:</strong>
+      <ol>
+        <li>High Speed and Bandwidth — operate at speed of light</li>
+        <li>High Precision — precise measurements and control</li>
+        <li>Security and Encryption — secure optical communication</li>
+        <li>Medical Applications — imaging, diagnostics, therapy</li>
+      </ol>
+    </div>
+    <div class="kw-block"><div class="ans-label">Keywords</div>Photons, optical interconnects, photonic integrated circuits, GaAs, semiconductor, meta-material, quantum computing, speed of light, optical fiber, high bandwidth</div>
+  </div>
+
+  <!-- Optical Switching and Transmission -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Q4. Optical Switching &amp; Optical Transmission — Definitions, Applications</span>
+      <span class="freq-badge freq-high">3/4 Papers</span>
+      <span class="marks-tag">4 Marks</span>
+      <span class="stars">★★★★★</span>
+    </div>
+    <div class="ans-block">
+      <div class="ans-label">Full Exam Answer</div>
+      <strong>Optical Switching Definition:</strong> A technique that allows transmission of an optical field through a device to switch between two or more possible states without compromising connectivity.<br><br>
+      <strong>Importance of Optical Switching:</strong>
+      <ol>
+        <li>Fast signal routing — swift data signal rerouting</li>
+        <li>Network expansion and integration of optical networks</li>
+        <li>Reduced latency — minimizes signal delays</li>
+        <li>Efficient power consumption — eliminates need for electrical signals</li>
+      </ol>
+      <strong>Applications of Optical Switching:</strong>
+      <ol>
+        <li>Optical Cross-Connects (OXCs) — connecting multiple optical fibres</li>
+        <li>WDM (Wavelength Division Multiplexing) Systems</li>
+        <li>Optical Packet Networks — routing data packets</li>
+        <li>Optical Amplifiers and Repeaters in long-haul communication</li>
+      </ol>
+      <strong>Types of Optical Switches:</strong> Mechanical, Electro-optic, Magneto-optic, Thermo-optic, Acoustic-optic.<br><br>
+      <strong>Optical Transmission Definition:</strong> A method of transmitting video, audio, and control signals as optical signals (light) and converting back to electrical signals at receiver side.<br><br>
+      <strong>Uses in Computer Communication:</strong>
+      <ol>
+        <li>Fast network data transfer</li>
+        <li>Forms internet backbone for rapid connectivity</li>
+        <li>Links systems within data centers efficiently</li>
+        <li>Provides high-speed internet connections</li>
+        <li>Enables long-distance data exchange</li>
+        <li>Improved security against electromagnetic interference</li>
+      </ol>
+    </div>
+    <div class="kw-block"><div class="ans-label">Keywords</div>Optical switching, WDM, OXC, optical amplifier, latency, signal routing, optical transmission, internet backbone, data center, long-distance, fiber optic</div>
+  </div>
+
+  <!-- Photoresist Film -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Q5. Photoresist Film — Definition, Types, Applications</span>
+      <span class="freq-badge freq-high">3/4 Papers</span>
+      <span class="marks-tag">4 Marks</span>
+      <span class="stars">★★★★★</span>
+    </div>
+    <div class="ans-block">
+      <div class="ans-label">Full Exam Answer</div>
+      <strong>Definition:</strong> Photoresist is a light-sensitive material utilized in photolithography and photoengraving to create patterned coatings on surfaces. It is a crucial process in the electronics industry for manufacturing ICs.<br><br>
+      <strong>Components:</strong> Resin (adhesion, chemical resistance), Sensitizer (photoactive compound), Solvent (keeps resist liquid).<br><br>
+      <strong>Types of Photoresist Film:</strong>
+      <ol>
+        <li><strong>Positive Photoresist:</strong>
+          <ul>
+            <li>The portion exposed to light becomes SOLUBLE in developer.</li>
+            <li>Unexposed portion remains INSOLUBLE (remains on surface).</li>
+            <li>Examples: Phenolic Novolak Resin, PMMA (Polymethyl Methacrylate)</li>
+          </ul>
+        </li>
+        <li><strong>Negative Photoresist:</strong>
+          <ul>
+            <li>The portion exposed to light becomes INSOLUBLE (hardened/crosslinked).</li>
+            <li>Unexposed portion gets DISSOLVED in developer.</li>
+            <li>Examples: Cyclized polyisoprene (rubber)</li>
+          </ul>
+        </li>
+      </ol>
+      <strong>Applications:</strong>
+      <ol>
+        <li>Micro contact printing (using elastomeric stamp)</li>
+        <li>Printed circuit boards (PCB manufacturing)</li>
+        <li>Silicon wafer patterning and etching</li>
+        <li>Microelectronics — IC fabrication</li>
+      </ol>
+    </div>
+    <div class="kw-block"><div class="ans-label">Keywords</div>Photolithography, positive resist, negative resist, PMMA, Novolak resin, photoengraving, soluble, insoluble, UV light, developer, IC fabrication, PCB</div>
+    <div class="trick-block"><div class="ans-label">Memory Trick</div>Positive resist = "Positive people expose themselves" (exposed area gets dissolved/removed). Negative resist = "Negative people hide when exposed" (exposed area hardens and stays).</div>
+  </div>
+
+  <!-- Definitions Unit 5 -->
+  <div class="section-head">Important Definitions — Unit 5</div>
+  <div class="card">
+    <table>
+      <tr><th>Term</th><th>Definition</th></tr>
+      <tr><td><strong>Photovoltaic Materials</strong></td><td>Semiconductor materials that convert solar energy (light) into electrical energy through the photovoltaic effect. e.g., Silicon, GaAs, CIGS.</td></tr>
+      <tr><td><strong>Silicon Wafer</strong></td><td>A thin, flat disk of crystalline silicon used as the substrate for integrated circuits and semiconductor devices. Manufacturing: slicing, lapping, etching, polishing, cleaning.</td></tr>
+      <tr><td><strong>Photonics</strong></td><td>Branch of physics and technology that studies the control, generation, detection of light particles (photons) and their interaction with materials.</td></tr>
+      <tr><td><strong>Optical Transmission</strong></td><td>Method of transmitting video, audio, and data signals as optical (light) signals through fiber optic cables, converting back to electrical signals at receiver side.</td></tr>
+      <tr><td><strong>Optical Switching</strong></td><td>Technique allowing optical field transmission through a device to switch between two or more states without compromising connectivity in optical networks.</td></tr>
+      <tr><td><strong>Photoresist Film</strong></td><td>Light-sensitive material used in photolithography to create patterned coatings on surfaces. Two types: Positive (exposed area dissolves) and Negative (exposed area hardens).</td></tr>
+      <tr><td><strong>Band Gap</strong></td><td>Energy difference between the valence band and conduction band in a semiconductor. Determines what photon energies can be absorbed for electricity generation.</td></tr>
+      <tr><td><strong>N-type Doping</strong></td><td>Adding pentavalent impurities (P, As) to semiconductor, introducing extra electrons. Makes material an n-type semiconductor with electron as majority carrier.</td></tr>
+      <tr><td><strong>P-type Doping</strong></td><td>Adding trivalent impurities (B, Ga) to semiconductor, creating holes (electron deficiencies). Makes material a p-type semiconductor with holes as majority carrier.</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ============================  COMPARISONS  ============================ -->
+<div id="comparisons" class="page">
+  <div class="section-head">All Important Differences / Comparisons (Repeated in Every Paper)</div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-title">Thermoplastic vs Thermosetting Polymers</span><span class="freq-badge freq-high">Every exam</span></div>
+    <table>
+      <tr><th>Point</th><th>Thermoplastic</th><th>Thermosetting</th></tr>
+      <tr><td>On heating</td><td>Soften and can be remoulded</td><td>Do not soften; decompose on excess heating</td></tr>
+      <tr><td>Structure</td><td>Linear or branched chains (no cross-links)</td><td>Highly cross-linked, 3D network structure</td></tr>
+      <tr><td>Solubility</td><td>Soluble in organic solvents</td><td>Insoluble in solvents</td></tr>
+      <tr><td>Recyclable</td><td>Yes, can be recycled</td><td>No, cannot be recycled</td></tr>
+      <tr><td>Strength</td><td>Less strong, flexible</td><td>High strength, rigid, brittle</td></tr>
+      <tr><td>Examples</td><td>PVC, Polyethylene, Polystyrene, Nylon</td><td>Bakelite, Epoxy resin, Urea formaldehyde</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-title">Dry Corrosion vs Wet Corrosion</span><span class="freq-badge freq-high">3/4 Papers</span></div>
+    <table>
+      <tr><th>Point</th><th>Dry Corrosion</th><th>Wet Corrosion</th></tr>
+      <tr><td>Cause</td><td>Direct attack of atmospheric gases (O₂, CO₂, SO₂)</td><td>Attack by aqueous conducting medium (water, acid, alkali)</td></tr>
+      <tr><td>Medium required</td><td>No moisture required</td><td>Liquid/moisture is essential</td></tr>
+      <tr><td>Mechanism</td><td>Chemical oxidation — forms metal oxide layer</td><td>Electrochemical — galvanic cell forms with anode &amp; cathode</td></tr>
+      <tr><td>Rate</td><td>Slower (depends on oxide film formed)</td><td>Faster (especially if oxide film is broken)</td></tr>
+      <tr><td>Products</td><td>Metal oxide film on surface</td><td>Soluble metal salts; rust; complex products</td></tr>
+      <tr><td>Example</td><td>Oxidation of iron in dry air</td><td>Rusting of iron in humid environment</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-title">Galvanizing vs Tinning</span><span class="freq-badge freq-high">3/4 Papers</span></div>
+    <table>
+      <tr><th>Point</th><th>Galvanizing</th><th>Tinning</th></tr>
+      <tr><td>Coating metal</td><td>Zinc (Zn)</td><td>Tin (Sn)</td></tr>
+      <tr><td>Temperature</td><td>450°C (molten zinc bath)</td><td>250°C (molten tin bath)</td></tr>
+      <tr><td>Coating type</td><td>Anodic coating</td><td>Cathodic coating</td></tr>
+      <tr><td>Cost</td><td>Cheaper</td><td>Costlier</td></tr>
+      <tr><td>Applications</td><td>GI pipes, sheets, screws, buckets, computer casings</td><td>Food containers, tin cans, cooking utensils</td></tr>
+      <tr><td>Reliability</td><td>More reliable (protection even after damage)</td><td>Less reliable (base metal corrodes if damaged)</td></tr>
+      <tr><td>Food contact</td><td>NOT safe (zinc is toxic)</td><td>Safe (tin is non-toxic)</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-title">Anodic Protection vs Cathodic Protection</span><span class="freq-badge freq-med">2/4 Papers</span></div>
+    <table>
+      <tr><th>Point</th><th>Cathodic Protection</th><th>Anodic Protection</th></tr>
+      <tr><td>Principle</td><td>Metal to be protected made cathode</td><td>Metal polarized into its passive region</td></tr>
+      <tr><td>Applicable metals</td><td>All metals</td><td>Only metals showing active-passive behaviour (Fe, Al, Cr, stainless steel)</td></tr>
+      <tr><td>Environment</td><td>Less electrically conducting environment</td><td>Highly conducting environment</td></tr>
+      <tr><td>Installation cost</td><td>Low</td><td>Higher</td></tr>
+      <tr><td>Operating cost</td><td>Higher</td><td>Lower</td></tr>
+      <tr><td>Lab prediction</td><td>Cannot be predicted by lab experiments</td><td>Can be predicted by lab experiments</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-title">Variance vs Standard Deviation</span><span class="freq-badge freq-high">3/4 Papers</span></div>
+    <table>
+      <tr><th>Point</th><th>Variance</th><th>Standard Deviation</th></tr>
+      <tr><td>Definition</td><td>Average of squared differences from mean</td><td>Square root of variance; average deviation from mean</td></tr>
+      <tr><td>Formula</td><td>σ² = Σ(xi-μ)² / N</td><td>σ = √(Σ(xi-μ)² / N)</td></tr>
+      <tr><td>Units</td><td>Square of original units</td><td>Same as original units</td></tr>
+      <tr><td>Interpretation</td><td>Harder to interpret directly</td><td>Easy to interpret — same units as data</td></tr>
+      <tr><td>Sensitivity to outliers</td><td>More sensitive (squares amplify outliers)</td><td>Less sensitive (after square root)</td></tr>
+      <tr><td>Use</td><td>Used in ANOVA, mathematical derivations</td><td>Used for data spread comparison</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-title">Correlation vs Regression</span><span class="freq-badge freq-high">3/4 Papers</span></div>
+    <table>
+      <tr><th>Point</th><th>Correlation</th><th>Regression</th></tr>
+      <tr><td>Purpose</td><td>Shows whether two variables are related (strength of relationship)</td><td>Quantifies how much change in one variable affects another (cause-effect)</td></tr>
+      <tr><td>Variable interchangeability</td><td>Variables can be interchanged (symmetric)</td><td>Variables cannot be interchanged (x → y only)</td></tr>
+      <tr><td>Output</td><td>Correlation coefficient (r), range: -1 to +1</td><td>Regression equation: Y = a + bX</td></tr>
+      <tr><td>Best measure</td><td>Pearson's correlation coefficient</td><td>Least-squares method</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-title">Positive vs Negative Skewness</span><span class="freq-badge freq-med">2/4 Papers</span></div>
+    <table>
+      <tr><th>Point</th><th>Positive Skewness (Right-skewed)</th><th>Negative Skewness (Left-skewed)</th></tr>
+      <tr><td>Tail direction</td><td>Long tail towards RIGHT</td><td>Long tail towards LEFT</td></tr>
+      <tr><td>Data concentration</td><td>Concentrated on LEFT side</td><td>Concentrated on RIGHT side</td></tr>
+      <tr><td>Central tendency relation</td><td>Mean &gt; Median &gt; Mode</td><td>Mode &gt; Median &gt; Mean</td></tr>
+      <tr><td>Value</td><td>Skewness value is positive (+)</td><td>Skewness value is negative (-)</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ============================  FORMULAS  ============================ -->
+<div id="formulas" class="page">
+  <div class="section-head">All Important Formulas, Points &amp; Numericals</div>
+
+  <div class="card">
+    <div class="card-title" style="margin-bottom:0.8rem">Unit 1 — Polymer Formulas</div>
+    <table>
+      <tr><th>Formula/Concept</th><th>Expression</th><th>How to remember</th></tr>
+      <tr><td>Molecular Weight of Polymer</td><td>MW = n × MW(monomer) where n = DOP</td><td>P = n × M (Polymer = n × Monomer)</td></tr>
+      <tr><td>Degree of Polymerization</td><td>n = MW(polymer) / MW(monomer)</td><td>Rearrange P = n × M</td></tr>
+      <tr><td>Pilling-Bedworth Ratio</td><td>PBR = Volume of metal oxide / Volume of metal consumed</td><td>PBR &gt; 1 → non-porous; PBR &lt; 1 → porous</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="margin-bottom:0.8rem">Unit 4 — Statistics Formulas (ALL CRITICAL)</div>
+    <table>
+      <tr><th>Formula</th><th>Expression</th><th>Used for</th></tr>
+      <tr><td>Mean</td><td>μ = Σxi / N</td><td>Central tendency</td></tr>
+      <tr><td>Population Variance</td><td>σ² = Σ(xi - μ)² / N</td><td>Spread of data (population)</td></tr>
+      <tr><td>Sample Variance</td><td>s² = Σ(xi - x̄)² / (N-1)</td><td>Spread of data (sample)</td></tr>
+      <tr><td>Population Std Dev</td><td>σ = √[Σ(xi - μ)² / N]</td><td>Standard spread from mean</td></tr>
+      <tr><td>Range</td><td>Range = Max - Min</td><td>Spread (simplest measure)</td></tr>
+      <tr><td>Linear Regression</td><td>Y = a + bX (b = slope, a = intercept)</td><td>Predicting Y from X</td></tr>
+      <tr><td>Residual</td><td>Residual = Observed - Predicted</td><td>Regression accuracy</td></tr>
+      <tr><td>Sampling Error</td><td>Error = Estimated - Actual</td><td>Survey accuracy</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="margin-bottom:0.8rem">Kurtosis Quick Reference</div>
+    <table>
+      <tr><th>Type</th><th>Value</th><th>Shape</th><th>Outliers</th></tr>
+      <tr><td>Mesokurtic</td><td>= 3 (excess = 0)</td><td>Normal bell curve</td><td>Normal</td></tr>
+      <tr><td>Leptokurtic</td><td>&gt; 3 (positive excess)</td><td>Sharp high peak, heavy tails</td><td>More outliers</td></tr>
+      <tr><td>Platykurtic</td><td>&lt; 3 (negative excess)</td><td>Flat peak, light tails</td><td>Fewer outliers</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="margin-bottom:0.8rem">Important PYQ Numericals Solved</div>
+    <div class="highlight">
+      <strong>1. First 10 ODD integers:</strong> 1,3,5,7,9,11,13,15,17,19 → Mean=10, Variance=33, SD=5.74<br>
+      <strong>2. First 10 EVEN integers:</strong> 2,4,6,8,10,12,14,16,18,20 → Mean=11, Variance=33, SD=5.74<br>
+      <strong>3. Data: 2,7,4,9,10</strong> → Mean=6.4, Variance=7.44, SD=2.73<br>
+      <strong>4. Data: 35,38,36,30,27,24,21,27</strong> → Mean≈29.75, Variance≈33.4, SD≈5.78<br>
+      <strong>5. Data: 33,33,29,29,27,26,27,32 (Mumbai)</strong> → Mean=29.5, Variance=7, SD=2.645<br>
+      <strong>6. DOP Numerical: MW polymer=63750, DOP=2700</strong> → MW monomer = 63750/2700 = 23.6<br>
+      <strong>7. MW polymer = 58000, MW monomer = 32</strong> → DOP = 58000/32 = 1812.5<br>
+      <strong>8. DOP=1000000, MW monomer=28 (Polyethylene)</strong> → MW polymer = 28,000,000
+    </div>
+  </div>
+</div>
+
+<!-- ============================  NIGHT BEFORE  ============================ -->
+<div id="nightbefore" class="page">
+  <div class="section-head">🌙 Night Before Exam — Must-Memorize Revision List</div>
+
+  <div class="highlight" style="margin-bottom:1rem">
+    This list contains ONLY the highest-probability items. Memorize these = guaranteed good score.
+  </div>
+
+  <div class="section-head" style="margin-top:0">⭐ MUST-DO QUESTIONS (Appeared in ALL 4 Papers)</div>
+
+  <div class="night-item">
+    <div class="night-label" style="color: var(--accent3)">UNIT 1 — 100% REPEAT</div>
+    <strong>Applications of Polymers in Electronics Field [4m]</strong><br>
+    Write: PVC insulation, Epoxy PCB, PANI conducting polymer, Polyimide dielectric, Epoxy encapsulation, LCP displays, PPV/OLED, Polymer battery electrolyte, P3HT solar cells. (8-9 points = full 4 marks)
+  </div>
+
+  <div class="night-item">
+    <div class="night-label" style="color: var(--accent3)">UNIT 4 — 100% REPEAT</div>
+    <strong>Population Variance &amp; Standard Deviation Numerical [4m]</strong><br>
+    Formula: σ² = Σ(xi-μ)²/N and σ = √σ². Steps: Find Mean → Make table (xi, xi-μ, (xi-μ)²) → Sum → Divide → Root. Practice: First 10 odd (SD=5.74), First 10 even (SD=5.74), 2,7,4,9,10 (SD=2.73).
+  </div>
+
+  <div class="night-item">
+    <div class="night-label" style="color: var(--accent3)">UNIT 2 — 100% REPEAT</div>
+    <strong>Optical Fiber [4m]:</strong> Definition → Structure (core, cladding, coating) → Classification (Glass: SiO₂; Plastic: PMMA) → Applications (Communication, Defence, Broadcasting, Medical).
+  </div>
+
+  <div class="night-item">
+    <div class="night-label" style="color: var(--accent3)">UNIT 5 — 100% REPEAT</div>
+    <strong>Li-Ion Battery [4m]:</strong> Components (Cathode LiCoO₂, Anode Graphite, Electrolyte, Separator) → Advantages (Low maintenance, Various sizes, High energy density, Low self-discharge 1-2%/month, High voltage 3.6V) → Applications.
+  </div>
+
+  <div class="night-item">
+    <div class="night-label" style="color: var(--accent3)">UNIT 5 — 100% REPEAT</div>
+    <strong>Photovoltaic Materials [4m]:</strong> Electronic (Band gap, Carrier mobility, Doping N/P-type) + Optical (Absorption spectrum, Quantum efficiency, Anti-reflective coatings) + Transport (Photo-generation, p-n junction, Excitation).
+  </div>
+
+  <div class="section-head">⭐ HIGH-PROBABILITY QUESTIONS (3/4 Papers)</div>
+
+  <div class="grid2">
+    <div class="night-item">
+      <div class="night-label" style="color: var(--accent4)">UNIT 1</div>
+      <strong>Degree of Polymerization Numerical [2m]</strong><br>
+      MW poly = MW mono × n. Know all 3 forms.
+    </div>
+    <div class="night-item">
+      <div class="night-label" style="color: var(--accent4)">UNIT 1</div>
+      <strong>Glass Transition Temperature Factors [4m]</strong><br>
+      CCMCPBP: Crystallinity, Chain flexibility, MW, Cross-linking, Plasticizers, Branching, Polarity.
+    </div>
+    <div class="night-item">
+      <div class="night-label" style="color: var(--accent4)">UNIT 1</div>
+      <strong>Constituents of Compounding [4m]</strong><br>
+      PFSLCFAB: Plasticizers, Fillers, Stabilizers, Lubricants, Colorants, Flame retardants, Antioxidants, Blowing agents.
+    </div>
+    <div class="night-item">
+      <div class="night-label" style="color: var(--accent4)">UNIT 1</div>
+      <strong>Doping Methods for Conducting Polymer [4m]</strong><br>
+      Chemical (p-type=oxidation, n-type=reduction) + Electrochemical + Photo-doping.
+    </div>
+    <div class="night-item">
+      <div class="night-label" style="color: var(--accent4)">UNIT 2</div>
+      <strong>Memory Building Tools &amp; Materials [4m]</strong><br>
+      RAM(Si MOSFET), ROM, Flash(floating gate SiO₂), HDD(CoFe alloy, GMR), MRAM(CoFeB, MgO), Cache.
+    </div>
+    <div class="night-item">
+      <div class="night-label" style="color: var(--accent4)">UNIT 3</div>
+      <strong>Sacrificial Anode Cathodic Protection [4m]</strong><br>
+      More active metal (Zn/Mg) as anode → connected to structure (cathode) via insulated wire → backfill (coal+NaCl) → applications: buried pipelines, ship hull, hot water tanks.
+    </div>
+    <div class="night-item">
+      <div class="night-label" style="color: var(--accent4)">UNIT 3</div>
+      <strong>Anodic vs Cathodic Coating [4m]</strong><br>
+      Anodic = coating higher in galvanic series (Zn/Al on steel) = protects even after rupture. Cathodic = tin/Ag on steel = fails on rupture.
+    </div>
+    <div class="night-item">
+      <div class="night-label" style="color: var(--accent4)">UNIT 3</div>
+      <strong>Galvanizing vs Tinning [4m] — Comparison table</strong><br>
+      Zn vs Sn, 450°C vs 250°C, Anodic vs Cathodic, GI pipes vs food cans.
+    </div>
+    <div class="night-item">
+      <div class="night-label" style="color: var(--accent4)">UNIT 4</div>
+      <strong>Skewness — Types [4m]</strong><br>
+      Positive: right tail, Mean&gt;Median&gt;Mode. Negative: left tail, Mode&gt;Median&gt;Mean. Normal: equal.
+    </div>
+    <div class="night-item">
+      <div class="night-label" style="color: var(--accent4)">UNIT 4</div>
+      <strong>Correlation vs Regression [4m] — 4 Points</strong><br>
+      Purpose, Variable interchangeability, Output (r vs Y=a+bX), Best measure (Pearson vs Least squares).
+    </div>
+    <div class="night-item">
+      <div class="night-label" style="color: var(--accent4)">UNIT 5</div>
+      <strong>Photonics — Materials &amp; Applications [4m]</strong><br>
+      Materials: Semiconductors, Crystals, Optical fiber, Meta-materials. Applications in computers: Optical interconnects, Photonic ICs, Quantum computing.
+    </div>
+    <div class="night-item">
+      <div class="night-label" style="color: var(--accent4)">UNIT 5</div>
+      <strong>Optical Switching &amp; Transmission [4m]</strong><br>
+      Switching: switches optical states. Applications: OXC, WDM, Optical packet networks. Transmission: sends signals as light. Uses: internet backbone, data centers, long distance.
+    </div>
+    <div class="night-item">
+      <div class="night-label" style="color: var(--accent4)">UNIT 5</div>
+      <strong>Photoresist Film — Positive vs Negative [4m]</strong><br>
+      Positive: exposed area dissolves (PMMA, Novolak). Negative: exposed area hardens (cyclized polyisoprene). Applications: PCB, IC fab, silicon wafer patterning.
+    </div>
+    <div class="night-item">
+      <div class="night-label" style="color: var(--accent4)">UNIT 1</div>
+      <strong>LCP — Classification &amp; Applications [4m]</strong><br>
+      Thermotropic (temp) + Lyotropic (solvent). Apps: LCD, PCB, fiber optic connectors, aerospace, medical.
+    </div>
+  </div>
+
+  <div class="section-head">⭐ Must-Memorize Definitions (2-mark Direct Questions)</div>
+  <div class="card">
+    <table>
+      <tr><th>Term</th><th>One-line Definition</th></tr>
+      <tr><td>Monomer</td><td>Smallest basic repeating unit with low MW, having at least 2 reactive sites.</td></tr>
+      <tr><td>Polymer</td><td>Large molecule formed by joining many monomers through polymerization, having high MW.</td></tr>
+      <tr><td>Glass Transition Temp (Tg)</td><td>Temperature at which amorphous polymer transforms from glassy to rubbery state.</td></tr>
+      <tr><td>Composite material</td><td>Material made by combining two or more different materials with distinct properties to achieve superior combined properties.</td></tr>
+      <tr><td>Nanomaterial</td><td>Substance where at least one dimension is 1–100 nm, exhibiting unique properties different from bulk.</td></tr>
+      <tr><td>Nano transistor</td><td>Semiconductor device at nanometer scale (&lt;100nm) used to control/amplify electronic signals.</td></tr>
+      <tr><td>MRAM</td><td>Non-volatile RAM using magnetic tunnel junctions (CoFeB/MgO) instead of electric charges to store data.</td></tr>
+      <tr><td>Corrosion</td><td>Destruction of metal by chemical or electrochemical reaction with environment (e.g., rusting of iron).</td></tr>
+      <tr><td>Tinning</td><td>Coating of tin on steel (cathodic coating, 250°C). Used for food containers — tin is non-toxic.</td></tr>
+      <tr><td>Galvanizing</td><td>Coating of zinc on steel (anodic coating, 450°C). Used for GI pipes, sheets, wires.</td></tr>
+      <tr><td>Variance</td><td>Average of squared differences from mean. σ² = Σ(xi-μ)²/N.</td></tr>
+      <tr><td>Calibration</td><td>Comparing a measurement device against a known standard to ensure safe and accurate operation.</td></tr>
+      <tr><td>Skewness</td><td>Statistical measure of asymmetry in a probability distribution around its mean.</td></tr>
+      <tr><td>Kurtosis</td><td>Measures peakness of a distribution. Expected value = 3. Types: Meso, Lepto, Platy.</td></tr>
+      <tr><td>Photovoltaic material</td><td>Semiconductor that converts solar energy into electrical energy through photovoltaic effect. e.g., Silicon, GaAs.</td></tr>
+      <tr><td>Silicon wafer</td><td>Thin flat disk of crystalline silicon used as substrate for ICs and semiconductor devices.</td></tr>
+      <tr><td>Photoresist</td><td>Light-sensitive material used in photolithography to create patterned coatings in IC manufacturing.</td></tr>
+      <tr><td>Optical switching</td><td>Technique to switch optical field between two or more states in optical networks without compromising connectivity.</td></tr>
+      <tr><td>Optical transmission</td><td>Method of transmitting signals as optical (light) signals through fiber optic cables.</td></tr>
+      <tr><td>DNA Computing</td><td>Natural computing using molecular properties of DNA to perform arithmetic operations via biochips.</td></tr>
+    </table>
+  </div>
+
+  <div class="section-head">⭐ Most Expected Questions for NEXT Exam</div>
+  <div class="card">
+    <ol>
+      <li><strong>[U1, 4m] Applications of polymers in electronics</strong> — near certainty; appeared in all 4 papers</li>
+      <li><strong>[U4, 4m] Population variance &amp; std deviation numerical</strong> — near certainty; appeared in all 4 papers</li>
+      <li><strong>[U1, 2m] DOP numerical</strong> — appeared in 3/4 papers; new numbers expected</li>
+      <li><strong>[U3, 4m] Sacrificial anode cathodic protection with diagram</strong></li>
+      <li><strong>[U3, 4m] Anodic vs cathodic coating, why anodic is better</strong></li>
+      <li><strong>[U2, 4m] Optical fiber classification + applications</strong></li>
+      <li><strong>[U5, 4m] Li-ion battery advantages + applications</strong></li>
+      <li><strong>[U4, 4m] Correlation vs Regression (4 differences)</strong></li>
+      <li><strong>[U1, 4m] Factors affecting Tg</strong></li>
+      <li><strong>[U5, 4m] Photovoltaic material — electronic, optical, transport properties</strong></li>
+      <li><strong>[U2, 2m] Define Nano transistor</strong></li>
+      <li><strong>[U4, 4m] Skewness — types with mean/median/mode relations</strong></li>
+      <li><strong>[U3, 4m] Galvanizing vs Tinning comparison</strong></li>
+      <li><strong>[U5, 4m] Photoresist film — positive vs negative types</strong></li>
+      <li><strong>[U1, 4m] Doping methods for conducting polymer</strong></li>
+    </ol>
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const map = {overview:0,unit1:1,unit2:2,unit3:3,unit4:4,unit5:5,comparisons:6,formulas:7,nightbefore:8};
+  document.querySelectorAll('.nav-btn')[map[id]].classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+</script>
+</body>
+</html>
